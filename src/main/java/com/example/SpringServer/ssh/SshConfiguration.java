@@ -41,10 +41,9 @@ public class SshConfiguration implements ServletContextInitializer {
 
     private File getKeyFile() throws FileNotFoundException {
         File file = new File("privateKey");
-        String key = System.getenv("SSH_F_KEY").substring(31);
+        String key = System.getenv("SSH_KEY").substring(31);
         key = key.substring(0, key.length() - 29).replaceAll(" ", "\n");
         key = "-----BEGIN RSA PRIVATE KEY-----" + key + "-----END RSA PRIVATE KEY-----";
-        System.out.println(key);
         PrintWriter out = new PrintWriter(file.getAbsolutePath());
         out.println(key);
         out.close();

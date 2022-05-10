@@ -1,3 +1,12 @@
+Setting up environmental variables: \
+Intelij: Run -> Edit Configurations... -> Environment Variables
+```
+DB_USER=[user];DB_PASSWORD=[password]
+```
+Using a database via ssh-tunnel:
+```
+DB_USER=postgres;DB_PASSWORD=root;SSH_Key=[keyContent];...//TODO
+```
 
 Port forwarding: 
 ```
