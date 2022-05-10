@@ -1,0 +1,18 @@
+{
+  "properties": [
+    {
+      "name": "ssh.forward.enabled",
+      "type": "java.lang.String",
+      "description": "Description for ssh.forward.enabled."
+    },
+    {
+      "name": "ssh.forward.host",
+      "type": "java.lang.String",
+      "description": "Description for ssh.forward.host."
+    },
+    {
+      "name": "ssh.forward.privateKey",
+      "type": "java.lang.String",
+      "description": "Description for ssh.forward.privateKey."
+    }
+  ] }

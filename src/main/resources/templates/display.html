@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel='stylesheet' href='./stylesheets/bootstrap.css'>
+  <link rel='stylesheet' href='./stylesheets/template.css'>
+  <link rel='stylesheet' href='./stylesheets/display.css'>
+  <title>Data Display</title>
+</head>
+<body>
+<header class="text-center">
+  <h1 id="title" th:data-id="${thisSensor.getSensorId()}" th:text="${thisSensor.getSensorNick()}"></h1>
+</header>
+<main id="main">
+  <div class="row">
+    <nav class="navbar lightgrey">
+      <a class="navbar-brand darkgrey">Navigation</a>
+      <form  method="get" action="/" class="wrapper">
+        <input class="button"  type="submit" value="home">
+      </form>
+      <div class="dropdown wrapper">
+        <button class="button" id="active_Page">Display Sensors</button>
+        <div class="dropdown-content">
+          <form th:each="sensor, i: ${sensors}" class="content" action="/display" method="get" >
+            <div th:if="${sensor == thisSensor}">
+              <input hidden name="sensor_id" th:value="${sensor.getSensorId()}">
+              <input class="dropdown-item" th:id="'dropdown_' + ${sensor.getSensorId()}" type="button" th:value="${sensor.sensorNick}">
+            </div>
+            <div th:if="${sensor != thisSensor}">
+              <input hidden name="sensor_id" th:value="${sensor.getSensorId()}">
+              <input class="dropdown-item" th:id="'dropdown_' + ${sensor.getSensorId()}" type="submit" th:value="${sensor.sensorNick}">
+            </div>
+          </form>
+        </div>
+      </div>
+      <form class="wrapper" action="/config/local-sensors" method="get">
+        <input  class="button" type="submit"  value="Local Sensors">
+      </form>
+      <form class="wrapper" action="/config/sensor-types" method="get">
+        <input class="button" type="submit" value="Edit Sensor Types">
+      </form>
+    </nav>
+  </div>
+
+  <div class="row" >
+    <section class="col-12 displayRowContainer">
+      <h1 id="current" class="displayRow" th:data-unit="${thisSensor.getSensorType().getUnit()}">Current Value: LOADING...</h1>
+    </section>
+  </div>
+  <div class="row">
+    <section class="col-12" id="chart">
+      <canvas id="myChart"></canvas>
+    </section>
+  </div>
+  <div class="row">
+    <section class="col-2" >
+      <button class="button buttonBig" onclick="getDataGraph(60);">1 hour</button>
+    </section>
+    <section class="col-2" >
+      <button class="button buttonBig" onclick="getDataGraph(720);">12 hour</button>
+    </section>
+    <section class="col-2" >
+      <button class="button buttonBig" onclick="getDataGraph(1440);">1 day</button>
+    </section>
+    <section class="col-2" >
+      <button class="button buttonBig" onclick="getDataGraph(2880);">2 day</button>
+    </section>
+    <section class="col-2" >
+      <button class=" button buttonBig" onclick="getDataGraph(4320);">3 days</button>
+    </section>
+    <section class="col-2" >
+      <button class="button buttonBig" onclick="getDataGraph(10080);">7 days</button>
+    </section>
+  </div>
+  <div class="row">
+    <section class="col-12 displayRowContainer">
+      <h1 class="displayRow" th:text="'Sensor Type: ' + ${thisSensor.getSensorType().getSensorType()}"></h1>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <h1>https://github.com/lr101/REST_Server</h1>
+</footer>
+<script src="./javascript/jquery-3.6.0.min.js"></script>
+<script src="./javascript/display.js"></script>
+<script src="./javascript/chart.js"></script>
+
+</body>
+</html>

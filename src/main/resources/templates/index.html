@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel='stylesheet' href='./stylesheets/bootstrap.css'>
+  <link rel='stylesheet' href='./stylesheets/template.css'>
+  <link rel='stylesheet' href='./stylesheets/index.css'>
+  <title>Home Overview</title>
+</head>
+<body>
+<header class="text-center">
+  <h1 id="title">Data Display</h1>
+</header>
+<main id="main" th:data-length="${sensors.size()}">
+  <div class="row">
+    <nav class="navbar lightgrey">
+      <a class="navbar-brand darkgrey">Navigation</a>
+      <form  method="get" action="/" class="wrapper">
+        <input id="active_Page" class="button"  type="button" value="home">
+      </form>
+      <div class="dropdown wrapper">
+        <button class="button">Display Sensors</button>
+        <div class="dropdown-content">
+            <form th:each="sensor: ${sensors}" class="content" action="/display" method="get" >
+              <input hidden name="sensor_id" th:value="${sensor.getSensorId()}">
+              <input class="dropdown-item" th:id="'dropdown_' + ${sensor.getSensorId()}" type="submit" th:value="${sensor.sensorNick}">
+            </form>
+        </div>
+      </div>
+      <form class="wrapper" action="/config/local-sensors" method="get">
+        <input  class="button" type="submit"  value="Local Sensors">
+      </form>
+      <form class="wrapper" action="/config/sensor-types" method="get">
+        <input class="button" type="submit" value="Edit Sensor Types">
+      </form>
+    </nav>
+  </div>
+  <div class="row" th:each="i: ${#numbers.sequence(0,sensors.size() / 4)}">
+    <form th:each="y: ${#numbers.sequence(0,3)}"  th:if="${i * 4 + y < sensors.size()}" class="col-md-3 text-center" th:id="'section_' + ${i * 4 + y}" method="get">
+      <div class="ib" th:if="${i * 4 + y < sensors.size()}">
+        <p class="data" th:data-id="${sensors.get(i * 4 + y).getSensorId()}" th:id="'sensor_' + ${i * 4 + y}" th:text="${sensors.get(i * 4 + y).getSensorNick()}">
+        <p th:data-unit="${sensors.get(i * 4 + y).getSensorType().getUnit()}" th:id="'value_' + ${i * 4 + y}">LOADING...</p>
+        <input name="sensor_id" hidden>
+      </div>
+    </form>
+  </div>
+</main>
+
+<footer>
+  <h1>https://github.com/lr101/REST_Server</h1>
+</footer>
+<script src="./javascript/jquery-3.6.0.min.js"></script>
+<script src="./javascript/index.js"></script>
+
+
+</body>
+</html>

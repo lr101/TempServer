@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel='stylesheet' href='../stylesheets/config-local-sensors.css'>
+    <link rel='stylesheet' href='../stylesheets/bootstrap.css'>
+    <link rel='stylesheet' href='../stylesheets/template.css'>
+    <title>Configuration</title>
+</head>
+<body>
+<header class="text-center">
+    <h1 id="title">Configuration</h1>
+</header>
+<main id="main" th:data-length="${sensors.size()}">
+    <div class="row">
+        <nav class="navbar lightgrey">
+            <a class="navbar-brand darkgrey">Navigation</a>
+            <form method="get" action="/" class="wrapper">
+                <input  class="button"  type="submit" value="home">
+            </form>
+            <div class="dropdown wrapper">
+                <button class="button">Display Sensors</button>
+                <div class="dropdown-content">
+                    <form id="dropdown" th:each="sensor: ${sensors}" class="content" action="/display" method="get" >
+                        <input hidden name="sensor_id" th:value="${sensor.getSensorId()}">
+                        <input class="dropdown-item" th:id="'dropdown_' + ${sensor.getSensorId()}" type="submit" th:value="${sensor.sensorNick}">
+                    </form>
+                </div>
+            </div>
+            <form class="wrapper" action="/config/local-sensors" method="get">
+                <input id="active_Page" class="button" type="button"  value="Local Sensors">
+            </form>
+            <form class="wrapper" action="/config/sensor-types" method="get">
+                <input class="button" type="submit" value="Edit Sensor Types">
+            </form>
+        </nav>
+    </div>
+
+    <div class="row" id="sensor_config">
+        <section class="col-lg-2 config" id="config_left">
+            <div class="content p-2">
+                <h2>Selection</h2>
+                <div class="list-group" id="list">
+                    <button th:each="sensor : ${sensors}" th:id="'list_' + ${sensor.getSensorId()}" th:data-id="${sensor.getSensorId()}" type="button" data-toggle="list" th:attr="onclick=|dropdown('${sensor.getSensorId()}')|" class="list-group-item list-group-item-action" th:text="${sensor.getSensorNick()}"></button>
+                </div>
+            </div>
+        </section>
+        <section class="col-lg-8 config" id="config_middle">
+            <div class="content">
+                <h1 id="config_name">NAME</h1>
+                <form id="form">
+                    <label  class="form-label" for="nickname">Nick Name:</label>
+                    <div class="input-group mb-3">
+                        <input maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="nickname" name="sensor_nick" required>
+                    </div>
+
+                    <label  class="form-label" for="type">Sensor Type:</label>
+                    <div class="input-group mb-3">
+                        <select class="form-select" id="selectType" aria-label="Select Sensor Type" >
+                            <option >Choose...</option>
+                        </select>
+                    </div>
+                    <label   class="form-label" for="id">Sensor ID:</label>
+                    <div class="input-group mb-3">
+                        <input autocomplete="off" class="form-control login-trigger" type="text" id="id" name="sensor_id" value="" readonly disabled>
+                    </div><br>
+                    <div class="input-group mb-3">
+                        <input data-target="#login_sub" data-toggle="modal" id="submit" class="button"  value="Submit">
+                        <input data-target="#login_sub" data-toggle="modal" id="delete" class="button  login-trigger" value="Delete">
+                    </div>
+                </form>
+            </div>
+        </section>
+        <section class="col-lg-2 config" id="config_right">
+            <div class="content" id="active_content">
+                <h2 id="active">LOADING...</h2>
+                <p id="temp">LOADING...</p>
+            </div>
+        </section>
+    </div>
+    <div class="row requestData content">
+        <section class="col-12">
+            <form>
+                <label for="date2_date">From (older):</label>
+                <div class="mb-3">
+                    <input type="date" id="date2_date" name="date2_date" >
+                    <input type="time" id="date2_time" name="date2_time" >
+                </div>
+                <label for="date1_date">To (now/newer):</label>
+                <div class="mb-3">
+                    <input type="date" id="date1_date" name="date1_date">
+                    <input type="time" id="date1_time" name="date1_time">
+                </div>
+                <div class="mb-3 row justify-content-lg-center">
+                    <section class="col col-lg-auto">
+                        <input id="getTempData"  type="button" class="button" value="Request">
+                    </section>
+                    <section class="col col-lg-auto">
+                        <input data-target="#login_del1" data-toggle="modal" id="deleteTempData"  type="button" class="button login-trigger" value="Delete">
+                    </section>
+                </div>
+            </form>
+        </section>
+    </div>
+</main>
+
+<footer>
+    <h1>https://github.com/lr101/REST_Server</h1>
+</footer>
+<script src="../javascript/jquery-3.6.0.min.js"></script>
+<script src="../javascript/bootstrap.bundle.js"></script>
+<script src="../javascript/config-local-sensors.js"></script>
+</body>
+</html>

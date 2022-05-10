@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel='stylesheet' href='../stylesheets/config-sensor-types.css'>
+  <link rel='stylesheet' href='../stylesheets/bootstrap.css'>
+  <link rel='stylesheet' href='../stylesheets/template.css'>
+  <title>Configuration</title>
+</head>
+<body>
+<header class="text-center">
+  <h1 id="title">Configuration</h1>
+</header>
+<main id="main">
+  <div class="row">
+    <nav class="navbar lightgrey">
+      <a class="navbar-brand darkgrey">Navigation</a>
+      <form method="get" action="/" class="wrapper">
+        <input  class="button"  type="submit" value="home">
+      </form>
+      <div class="dropdown wrapper">
+        <button class="button">Display Sensors</button>
+        <div class="dropdown-content">
+          <form th:each="sensor: ${sensors}" class="content" action="/display" method="get" >
+            <input hidden name="sensor_id" th:value="${sensor.getSensorId()}">
+            <input class="dropdown-item" th:id="'dropdown_' + ${sensor.getSensorId()}" type="submit" th:value="${sensor.sensorNick}">
+          </form>
+        </div>
+      </div>
+      <form class="wrapper" action="/config/local-sensors" method="get">
+        <input class="button" type="submit"  value="Local Sensors">
+      </form>
+      <form class="wrapper" action="/config/sensor-types" method="get">
+        <input id="active_Page" class="button" type="button" value="Edit Sensor Types">
+      </form>
+    </nav>
+  </div>
+
+  <div class="row" id="sensor_config">
+    <section class="col-lg-2 config" id="config_left">
+      <div class="content p-2">
+        <h2>Selection</h2>
+        <div class="list-group" id="list">
+          <button th:each="type : ${types}" th:id="'list_' + ${type.getId()}" type="button" data-toggle="list" th:attr="onclick=|select('${type.getSensorType()}', '${type.getId()}', '${type.getUnit()}', '${type.getRepetitions()}', '${type.getSleepTime()}')|" class="list-group-item list-group-item-action" th:text="${type.getSensorType()}"></button>
+          <button id="list_new"  type="button" data-toggle="list" onclick="select('', '', '')" class="list-group-item list-group-item-action active">+</button>
+        </div>
+
+      </div>
+    </section>
+    <section class="col-lg-10 config" id="config_middle">
+      <div class="content">
+        <h1 id="config_name">Sensor Type</h1>
+        <form id="form">
+          <label  class="form-label" for="typeName">Sensor Type Name:</label>
+          <div class="input-group mb-3">
+            <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensor_type" required>
+          </div>
+          <label class="form-label"  for="typeUnit">Sensor Unit:</label>
+          <div class="input-group mb-3">
+            <input maxlength="5" minlength="1" autocomplete="off" class="form-control" type="text" id="typeUnit" name="unit" required>
+          </div>
+          <label  class="form-label" for="repetitions">Number of Repetitions before calculating average value:</label>
+          <div class="input-group mb-3">
+            <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="repetitions" name="repetitions" required>
+          </div>
+          <label  class="form-label" for="sleep_time">Time between two sets of measurements in ms:</label>
+          <div class="input-group mb-3">
+            <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="sleep_time" name="sleep_time" required>
+          </div>
+          <div class="input-group mb-3">
+            <input data-target="#login_sub" data-toggle="modal"  id="submit" class="button login-trigger"  value="Submit">
+            <input data-target="#login_del" data-toggle="modal" id="delete" class="button login-trigger" value="Delete">
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <h1>https://github.com/lr101/REST_Server</h1>
+</footer>
+<script src="../javascript/jquery-3.6.0.min.js"></script>
+<script src="../javascript/bootstrap.bundle.js"></script>
+<script src="../javascript/config-sensor-types.js"></script>
+</body>
+</html>
