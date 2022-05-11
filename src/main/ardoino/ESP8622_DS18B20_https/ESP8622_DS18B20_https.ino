@@ -5,6 +5,7 @@
 #include <DallasTemperature.h>
 #include <Arduino_JSON.h>
 #include <WiFiClientSecure.h>
+#include "config.h"
 
 //Define GPIO pin D2 as Data-pin
 #define ONE_WIRE_BUS 4
