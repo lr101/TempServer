@@ -11,7 +11,7 @@ public class Id {
     private String sensorNick;
 
     @OneToOne
-    @JoinColumn(name = "sensor_type_id", nullable = false)
+    @JoinColumn(name = "sensor_type_id")
     private Type sensorType;
 
     @javax.persistence.Id

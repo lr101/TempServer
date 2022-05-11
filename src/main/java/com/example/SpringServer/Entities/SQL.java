@@ -2,6 +2,8 @@ package com.example.SpringServer.Entities;
 
 public class SQL {
 
+    public String updateTypeById() {return "UPDATE $ SET id=? WHERE id=?";}
+
     public String selectEntryBetween() {
         return "SELECT * FROM $ WHERE date <= ? AND date >= ? ORDER BY row_id DESC";
     }

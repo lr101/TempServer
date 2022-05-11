@@ -3,6 +3,7 @@ package com.example.SpringServer.Controller;
 import com.example.SpringServer.Entities.Id;
 import com.example.SpringServer.Entities.JDBC;
 import com.example.SpringServer.repository.SensorRepository;
+import com.example.SpringServer.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,10 @@ public class RestControllerSensors {
 
     @Autowired
     SensorRepository sensorRepo;
+
+    @Autowired
+    TypeRepository typeRepo;
+
     JDBC jdbc = new JDBC();
 
     //working
@@ -54,7 +59,9 @@ public class RestControllerSensors {
 
     //working
     @PostMapping("/sensors/id/")
-    public Id postSensor(@RequestBody Id sensor) {
+    public Id postSensor(@RequestBody Id sensor, @RequestBody(required = false) Long typeId) {
+        if (typeId == null) typeId = 0L;
+        sensor.setSensorType(typeRepo.findByTypeId(typeId));
         Id id = sensorRepo.save(sensor);
         jdbc.createEntryTable(sensor.getSensorId());
         return id;
