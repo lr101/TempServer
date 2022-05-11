@@ -54,3 +54,5 @@ Einstellungen speichern mit:
 ```
  sudo systemctl daemon-reload
 ```
+
+Ardiono IDE ESP8266 Library: http://arduino.esp8266.com/stable/package_esp8266com_index.json
