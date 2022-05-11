@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### ardoino ###
-*.ino
+**/config.h
 
 ### other ###
 /bw-cloud/
