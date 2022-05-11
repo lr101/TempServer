@@ -35,9 +35,12 @@ StartLimitIntervalSec=0
 
 [Service]
 Restart=always
-RestartSec=1
+RestartSec=20
 User=pi
-ExecStart=java -jar /home/pi/stuff/SpringServer-1.jar
+Environment=DB_USER=[user] #TODO
+Environment=DB_PASSWORD=[psw] #TODO
+Environment=DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/postgres
+ExecStart=java -jar $PWD/SpringServer-1.jar
 
 [Install]
 WantedBy=multi-user.target
@@ -54,3 +57,5 @@ Einstellungen speichern mit:
 ```
  sudo systemctl daemon-reload
 ```
+
+Ardiono IDE ESP8266 Library: http://arduino.esp8266.com/stable/package_esp8266com_index.json

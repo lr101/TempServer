@@ -1,9 +1,12 @@
 package com.example.SpringServer.Controller;
 
 import com.example.SpringServer.Entities.Id;
+import com.example.SpringServer.Entities.JDBC;
 import com.example.SpringServer.Entities.Type;
 import com.example.SpringServer.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,6 +18,16 @@ public class RestControllerTypes {
 
     @Autowired
     TypeRepository typeRepository;
+
+    JDBC jdbc = new JDBC();
+
+    public void setupType() {
+        if (typeRepository.findByTypeId(0L) == null) {
+            Type defaultType = new Type();
+            typeRepository.save(defaultType);
+            jdbc.updateType( 0L, defaultType.getId());
+        }
+    }
 
     //working
     @GetMapping(value = "/sensors/types/")

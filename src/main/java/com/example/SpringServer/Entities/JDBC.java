@@ -1,5 +1,11 @@
 package com.example.SpringServer.Entities;
 
+import com.example.SpringServer.repository.TypeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.context.event.EventListener;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,6 +17,10 @@ public class JDBC {
 
     private final SQL SQL_STRINGS = new SQL();
     private Connection conn;
+
+    @Autowired
+    @Lazy
+    TypeRepository typeRepository;
 
     public JDBC()  {
 
@@ -158,11 +168,21 @@ public class JDBC {
                     stmt.setInt(count, (Integer) obj);
                 } else if (obj instanceof Double) {
                     stmt.setDouble(count, (Double) obj);
+                }else if (obj instanceof Long) {
+                    stmt.setLong(count, (Long) obj);
                 } else if (obj instanceof java.sql.Timestamp) {
                     stmt.setTimestamp(count, (java.sql.Timestamp) obj);
                 }
             }
             count++;
+        }
+    }
+
+    public void updateType(Long idOld, Long idNew) {
+        try {
+            this.update(SQL_STRINGS.updateTypeById(), new Object[] {"type", idOld, idNew});
+        }catch (SQLException e) {
+            System.out.println(e.toString());
         }
     }
 
