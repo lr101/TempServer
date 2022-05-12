@@ -35,14 +35,18 @@
       </form>
     </nav>
   </div>
-  <div class="row sensor-row" th:each="i: ${#numbers.sequence(0,sensors.size() / 4)}">
-    <form th:each="y: ${#numbers.sequence(0,3)}"  th:if="${i * 4 + y < sensors.size()}" class="col-lg-3 text-center" th:id="'section_' + ${i * 4 + y}" method="get">
-      <div class="ib" th:if="${i * 4 + y < sensors.size()}">
-        <p class="data" th:data-id="${sensors.get(i * 4 + y).getSensorId()}" th:id="'sensor_' + ${i * 4 + y}" th:text="${sensors.get(i * 4 + y).getSensorNick()}">
-        <p th:data-unit="${sensors.get(i * 4 + y).getSensorType().getUnit()}" th:id="'value_' + ${i * 4 + y}">LOADING...</p>
-        <input name="sensor_id" hidden>
+  <div class="parent row">
+    <div class="group">
+      <div class="row sensor-row" th:each="i: ${#numbers.sequence(0,sensors.size() / 3)}">
+        <form th:each="y: ${#numbers.sequence(0,2)}"  th:if="${i * 3 + y < sensors.size()}" class="col-4 text-center" th:id="'section_' + ${i * 3 + y}" method="get">
+          <div class="ib" th:if="${i * 3 + y < sensors.size()}">
+            <p class="data" th:data-id="${sensors.get(i * 3 + y).getSensorId()}" th:id="'sensor_' + ${i * 3 + y}" th:text="${sensors.get(i * 3 + y).getSensorNick()}+':'">
+            <p class="data-value" th:data-unit="${sensors.get(i * 3 + y).getSensorType().getUnit()}" th:id="'value_' + ${i * 3 + y}">LOADING...</p>
+            <input name="sensor_id" hidden>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </main>
 

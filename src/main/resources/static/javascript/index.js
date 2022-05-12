@@ -17,7 +17,7 @@ function getData() {
                     document.getElementById("value_" + i).innerHTML = "No Data available";
                 } else {
                     let unit = document.getElementById("value_" + i).getAttribute("data-unit");
-                    document.getElementById("value_" + i).innerHTML = "Current: " + list[list.length - 1].entryValue + unit;
+                    document.getElementById("value_" + i).innerHTML = list[list.length - 1].entryValue + unit;
                 }
             }
         };
@@ -43,7 +43,7 @@ function setListeners(classSelector) {
 $(function() {
 
     length = document.getElementById("main").getAttribute("data-length");
-    setListeners(".col-md-3", )
+    setListeners(".col-4", )
     getData();
     setInterval(getData, 20000);
 });
