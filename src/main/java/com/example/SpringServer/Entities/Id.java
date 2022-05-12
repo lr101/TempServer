@@ -1,5 +1,7 @@
 package com.example.SpringServer.Entities;
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Set;
 
 @Entity
 public class Id {
@@ -13,6 +15,10 @@ public class Id {
     @OneToOne
     @JoinColumn(name = "sensor_type_id")
     private Type sensorType;
+
+    @OneToMany
+    @JoinColumn(name = "sensor_categorie_id")
+    private Set<Category> sensorCategory;
 
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,5 +54,13 @@ public class Id {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Set<Category> getSensorCategory() {
+        return sensorCategory;
+    }
+
+    public void setSensorCategory(Set<Category> sensorCategory) {
+        this.sensorCategory = sensorCategory;
     }
 }

@@ -1,15 +1,15 @@
 package com.example.SpringServer.Controller;
 
+import com.example.SpringServer.Entities.Category;
 import com.example.SpringServer.Entities.Id;
 import com.example.SpringServer.Entities.JDBC;
+import com.example.SpringServer.repository.CategoryRepository;
 import com.example.SpringServer.repository.SensorRepository;
 import com.example.SpringServer.repository.TypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -17,6 +17,9 @@ public class RestControllerSensors {
 
     @Autowired
     SensorRepository sensorRepo;
+
+    @Autowired
+    CategoryRepository categoryRepository;
 
     @Autowired
     TypeRepository typeRepo;
@@ -63,6 +66,11 @@ public class RestControllerSensors {
         if (sensor.getSensorType() == null) {
             sensor.setSensorType(typeRepo.findByTypeId(0L));
         }
+        if (sensor.getSensorCategory() == null) {
+            Set<Category> c = new HashSet<>();
+            c.add(categoryRepository.findByCategoryId(0L));
+            sensor.setSensorCategory(c);
+        }
         Id id = sensorRepo.save(sensor);
         jdbc.createEntryTable(sensor.getSensorId());
         return id;
@@ -74,10 +82,4 @@ public class RestControllerSensors {
         jdbc.dropTable(sensorId);
         sensorRepo.deleteSensor(sensorId);
     }
-
-    private class PostSensor {
-        public Id sensor;
-        public Long typeId;
-    }
-
 }

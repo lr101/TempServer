@@ -11,16 +11,16 @@ public class Type {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(name = "sensor_type")
+    @Column(name = "sensor_type", nullable = false)
     private String sensorType = "Default";
 
-    @Column(name = "unit")
+    @Column(name = "unit", nullable = false)
     private String unit = "dUnit";
 
-    @Column(name = "repetitions")
+    @Column(name = "repetitions", nullable=false)
     private int repetitions = 10;
 
-    @Column(name = "sleep_time")
+    @Column(name = "sleep_time", nullable = false)
     private int sleepTime = 10;
 
     public Long getId() {

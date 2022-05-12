@@ -180,7 +180,15 @@ public class JDBC {
 
     public void updateType(Long idOld, Long idNew) {
         try {
-            this.update(SQL_STRINGS.updateTypeById(), new Object[] {"type", idOld, idNew});
+            this.update(SQL_STRINGS.updateById(), new Object[] {"type", idOld, idNew});
+        }catch (SQLException e) {
+            System.out.println(e.toString());
+        }
+    }
+
+    public void updateCategory(Long idOld, Long idNew) {
+        try {
+            this.update(SQL_STRINGS.updateById(), new Object[] {"category", idOld, idNew});
         }catch (SQLException e) {
             System.out.println(e.toString());
         }

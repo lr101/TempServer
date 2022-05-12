@@ -49,31 +49,18 @@
       <div class="content p-2">
         <h2>Selection</h2>
         <div class="list-group" id="list">
-          <button th:each="type : ${types}" th:id="'list_' + ${type.getId()}" type="button" data-toggle="list" th:attr="onclick=|select('${type.getSensorType()}', '${type.getId()}', '${type.getUnit()}', '${type.getRepetitions()}', '${type.getSleepTime()}')|" class="list-group-item list-group-item-action" th:text="${type.getSensorType()}"></button>
-          <button id="list_new"  type="button" data-toggle="list" onclick="select('', '', '')" class="list-group-item list-group-item-action active">+</button>
+          <button th:each="category : ${categories}" th:id="'list_' + ${category.getId()}" type="button" data-toggle="list" th:attr="onclick=|select('${category.getSensorCategory()}', '${category.getId()}')|" class="list-group-item list-group-item-action" th:text="${category.getSensorCategory()}"></button>
+          <button id="list_new"  type="button" data-toggle="list" onclick="select('', '')" class="list-group-item list-group-item-action active">+</button>
         </div>
-
       </div>
     </section>
     <section class="col-lg-10 config" id="config_middle">
       <div class="content">
-        <h1 id="config_name">Sensor Type</h1>
+        <h1 id="config_name">Sensor Category</h1>
         <form id="form">
-          <label  class="form-label" for="typeName">Sensor Type Name:</label>
+          <label  class="form-label" for="categoryName">Sensor Category:</label>
           <div class="input-group mb-3">
-            <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensor_type" required>
-          </div>
-          <label class="form-label"  for="typeUnit">Sensor Unit:</label>
-          <div class="input-group mb-3">
-            <input maxlength="5" minlength="1" autocomplete="off" class="form-control" type="text" id="typeUnit" name="unit" required>
-          </div>
-          <label  class="form-label" for="repetitions">Number of Repetitions before calculating average value:</label>
-          <div class="input-group mb-3">
-            <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="repetitions" name="repetitions" required>
-          </div>
-          <label  class="form-label" for="sleep_time">Time between two sets of measurements in ms:</label>
-          <div class="input-group mb-3">
-            <input data-id="" min="1" autocomplete="off" class="form-control" type="number" id="sleep_time" name="sleep_time" required>
+            <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="categoryName" name="sensor_category" required>
           </div>
           <div class="input-group mb-3">
             <input data-target="#login_sub" data-toggle="modal"  id="submit" class="button login-trigger"  value="Submit">
@@ -90,6 +77,6 @@
 </footer>
 <script src="../javascript/jquery-3.6.0.min.js"></script>
 <script src="../javascript/bootstrap.bundle.js"></script>
-<script src="../javascript/config-sensor-types.js"></script>
+<script src="../javascript/config-sensor-categories.js"></script>
 </body>
 </html>

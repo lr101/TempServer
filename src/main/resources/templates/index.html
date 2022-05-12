@@ -27,16 +27,39 @@
             </form>
         </div>
       </div>
-      <form class="wrapper" action="/config/local-sensors" method="get">
-        <input  class="button" type="submit"  value="Local Sensors">
-      </form>
-      <form class="wrapper" action="/config/sensor-types" method="get">
-        <input class="button" type="submit" value="Edit Sensor Types">
-      </form>
+      <div class="dropdown wrapper">
+        <button class="button">Configuration</button>
+        <div class="dropdown-content">
+          <form class="content" action="/config/local-sensors" method="get">
+            <input  class="dropdown-item" type="submit"  value="Edit Sensors">
+          </form>
+          <form class="content" action="/config/sensor-types" method="get">
+            <input class="dropdown-item" type="submit" value="Edit Types">
+          </form>
+          <form class="content" action="/config/sensor-categories" method="get">
+            <input class="dropdown-item" type="submit" value="Edit Categories">
+          </form>
+        </div>
+      </div>
+      <div class="dropdown wrapper" id="sort">
+        <button class="button">Sort/Filter</button>
+        <div class="dropdown-content">
+          <div class="content">
+            <button id="sort-all" class="dropdown-item">All</button>
+          </div>
+          <div class="content">
+            <button id="sort-type" class="dropdown-item">Type</button>
+          </div>
+          <div class="content">
+            <button id="sort-category" class="dropdown-item">Category</button>
+          </div>
+        </div>
+      </div>
     </nav>
   </div>
   <div class="parent">
-    <div class="group">
+    <fieldset class="category">
+      <legend class="category-legend">All</legend>
       <div class="row sensor-row" th:each="i: ${#numbers.sequence(0,sensors.size() / 3)}">
         <form th:each="y: ${#numbers.sequence(0,2)}"  th:if="${i * 3 + y < sensors.size()}" th:class="'col-4 text-center c-' + ${y}" th:id="'section_' + ${i * 3 + y}" method="get">
           <div class="ib" th:if="${i * 3 + y < sensors.size()}">
@@ -46,7 +69,7 @@
           </div>
         </form>
       </div>
-    </div>
+    </fieldset>
   </div>
 </main>
 

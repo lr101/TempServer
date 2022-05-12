@@ -22,6 +22,30 @@
     font-size: 100pt;
 }
 
+#sort {
+    margin-left: auto;
+}
+
+.category {
+    border-radius: 10px;
+    border: 1px solid rgba(51, 51, 51, 1);
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.category-legend {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-weight: 500;
+    color: rgba(51, 51, 51, 1);
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    float: none;
+    padding: 0.2em 0.8em
+}
+
 .sensor-row {
     margin-bottom: 0;
     overflow: hidden;

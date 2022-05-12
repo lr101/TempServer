@@ -1,11 +1,13 @@
 package com.example.SpringServer.repository;
 
+import com.example.SpringServer.Entities.Category;
 import com.example.SpringServer.Entities.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class SensorRepositoryImpl implements SensorRepositoryCustom {
     @Autowired
@@ -36,11 +38,18 @@ public class SensorRepositoryImpl implements SensorRepositoryCustom {
     }
 
     @Override
+    public Set<Category> findSensorCategoriesById(String sensorId) {
+        Id id = this.findById(sensorId);
+        return id == null ? null : id.getSensorCategory();
+    }
+
+    @Override
     @Transactional
     public Id updateSensor(Id sensor) {
         Id id = this.findById(sensor.getSensorId());
         id.setSensorNick(sensor.getSensorNick());
         id.setSensorType(sensor.getSensorType());
+        id.setSensorCategory(sensor.getSensorCategory());
         return id;
     }
 

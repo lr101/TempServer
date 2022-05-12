@@ -27,12 +27,20 @@
                     </form>
                 </div>
             </div>
-            <form class="wrapper" action="/config/local-sensors" method="get">
-                <input id="active_Page" class="button" type="button"  value="Local Sensors">
-            </form>
-            <form class="wrapper" action="/config/sensor-types" method="get">
-                <input class="button" type="submit" value="Edit Sensor Types">
-            </form>
+            <div class="dropdown wrapper">
+                <button class="button">Configuration</button>
+                <div class="dropdown-content">
+                    <form class="content" action="/config/local-sensors" method="get">
+                        <input  class="dropdown-item" type="submit"  value="Edit Sensors">
+                    </form>
+                    <form class="content" action="/config/sensor-types" method="get">
+                        <input class="dropdown-item" type="submit" value="Edit Types">
+                    </form>
+                    <form class="content" action="/config/sensor-categories" method="get">
+                        <input class="dropdown-item" type="submit" value="Edit Categories">
+                    </form>
+                </div>
+            </div>
         </nav>
     </div>
 
