@@ -59,9 +59,10 @@ public class RestControllerSensors {
 
     //working
     @PostMapping("/sensors/id/")
-    public Id postSensor(@RequestBody Id sensor, @RequestBody(required = false) Long typeId) {
-        if (typeId == null) typeId = 0L;
-        sensor.setSensorType(typeRepo.findByTypeId(typeId));
+    public Id postSensor(@RequestBody Id sensor) {
+        if (sensor.getSensorType() == null) {
+            sensor.setSensorType(typeRepo.findByTypeId(0L));
+        }
         Id id = sensorRepo.save(sensor);
         jdbc.createEntryTable(sensor.getSensorId());
         return id;
@@ -72,6 +73,11 @@ public class RestControllerSensors {
     public void deleteSensor(@PathVariable("sensorId") String sensorId) {
         jdbc.dropTable(sensorId);
         sensorRepo.deleteSensor(sensorId);
+    }
+
+    private class PostSensor {
+        public Id sensor;
+        public Long typeId;
     }
 
 }

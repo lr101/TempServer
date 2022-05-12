@@ -1,16 +1,16 @@
-.col-md-3:before{
+.col-lg-3:before{
     content: '';
     width: 0;
 }
 
-.col-md-3:before, .ib {
+.col-lg-3:before, .ib {
     white-space: normal;
     display: inline-block;
     vertical-align: middle;
     max-width: 100%;
 }
 
-.col-md-3:before {
+.col-lg-3:before {
     padding-top: 100%;
     /* makes expand to a square */
 }
@@ -39,6 +39,9 @@
     font-size: 100pt;
 }
 
+.sensor-row {
+    margin-bottom: 0;
+}
 
 
 

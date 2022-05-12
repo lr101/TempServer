@@ -21,6 +21,7 @@ public class RestControllerTypes {
 
     JDBC jdbc = new JDBC();
 
+    @EventListener(ApplicationReadyEvent.class)
     public void setupType() {
         if (typeRepository.findByTypeId(0L) == null) {
             Type defaultType = new Type();

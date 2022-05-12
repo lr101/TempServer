@@ -6,7 +6,7 @@ main {
 
 header {
     background-image: url("../pictures/color.jpg");
-    min-height: 40vh;
+    height: 40vh;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -197,4 +197,15 @@ h4 {
 .login:hover {
     background: white;
     color: #f14541;
+}
+
+@media only screen and (max-width: 600px) {
+    header {
+        height: 20vh;
+    }
+
+    #title {
+        padding-top: 5vh;
+    }
+
 }
