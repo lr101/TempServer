@@ -66,10 +66,12 @@ public class RestControllerSensors {
         if (sensor.getSensorType() == null) {
             sensor.setSensorType(typeRepo.findByTypeId(0L));
         }
+        //TODO add the default category on create
+        /*
         if (sensor.getCategories().size() == 0) {
             sensor.addCategory(categoryRepository.findByCategoryId(0L));
             System.out.println(sensor.getCategories());
-        }
+        }*/
         Id id = sensorRepo.save(sensor);
         jdbc.createEntryTable(sensor.getSensorId());
         return id;

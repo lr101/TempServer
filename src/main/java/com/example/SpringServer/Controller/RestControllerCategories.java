@@ -18,14 +18,15 @@ public class RestControllerCategories {
 
     JDBC jdbc = new JDBC();
 
-    @EventListener(ApplicationReadyEvent.class)
+    //TODO add a default category?
+    /*@EventListener(ApplicationReadyEvent.class)
     public void setupCategory() {
         if (categoryRepository.findByCategoryId(0L) == null) {
             Category defaultCategory = new Category();
             categoryRepository.save(defaultCategory);
             jdbc.updateCategory( 0L, defaultCategory.getId());
         }
-    }
+    }*/
 
     //working
     @GetMapping(value = "/sensors/categories/")

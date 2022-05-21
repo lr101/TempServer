@@ -59,7 +59,9 @@ function chartIt(values, dates) {
                     },
 
                     type: 'time',
+                    distribution: 'linear',
                     time: {
+                        unit: 'day', //TODO test if works
                         tooltipFormat: 'HH:mm'
                     },
 
@@ -119,6 +121,6 @@ function getDataCurrent() {
 $(function () {
     chartIt([], []);
     getDataCurrent();
-    getDataGraph();
+    getDataGraph(720);
     setInterval(getDataCurrent, 20000);
 });

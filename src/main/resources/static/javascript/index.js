@@ -14,7 +14,7 @@ function getData() {
             if (ajax.readyState === 4) {
                 let list = JSON.parse(ajax.responseText);
                 if (list.length === 0) {
-                    document.getElementById("value_" + i).innerHTML = "No Data available";
+                    document.getElementById("value_" + i).innerHTML = "No Data";
                 } else {
                     let unit = document.getElementById("value_" + i).getAttribute("data-unit");
                     document.getElementById("value_" + i).innerHTML = list[list.length - 1].entryValue + unit;

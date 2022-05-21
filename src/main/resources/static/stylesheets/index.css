@@ -75,12 +75,12 @@
 }
 
 .data {
-    font-size: 2.5vw;
+    font-size: 3vw;
     transform: skewX(15deg);
 }
 
 .data-value {
-    font-size:3vw;
+    font-size:4.5vw;
     transform: skewX(15deg);
 }
 
