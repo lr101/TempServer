@@ -29,9 +29,27 @@ input {
     letter-spacing: 4px;
 }
 
-.active {
+
+li > a:hover {
     background-color:  rgba(223,26,56,1) !important;
     border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.active {
+    background-color:white !important;
+}
+
+.list-group > .active {
+    background-color:  rgba(223,26,56,1) !important;
+    border-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.dropdown-menu > li > a > span {
+    color: black;
+}
+
+.dropdown-menu > li > a:hover > span {
+    color: white;
 }
 
 #active {
@@ -42,6 +60,8 @@ input {
     margin-bottom: 0;
 }
 
-
+.bootstrap-select {
+    width: 100% !important;
+}
 
 

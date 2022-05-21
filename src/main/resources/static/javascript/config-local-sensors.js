@@ -14,13 +14,8 @@ function dropdown(id) {
                     document.getElementById("config_name").innerHTML = values.sensorNick;
                     document.getElementById("nickname").value = values.sensorNick;
                     document.getElementById("id").value = values.sensorId;
-                    let nodes = document.getElementById("selectType").children;
-                    for (let i = 0; i < nodes.length; i++) {
-                        let value = nodes[i].getAttribute("value");
-                        if (value && value.toString() === values.sensorType.id.toString()) {
-                            document.getElementById("selectType").selectedIndex = i.toString();
-                        }
-                    }
+                    changeSelectedIndex("selectType", values.sensorType);
+                    changeSelectedIndexCategory("selectCategory", values.categories);
                 }
             }
         };
@@ -28,27 +23,70 @@ function dropdown(id) {
     }
 }
 
-function updatesensor_types() {
+function changeSelectedIndexCategory(docId, sensorTypeOrCategory) {
+    let values = [];
+    for (let y = 0; y < sensorTypeOrCategory.length; y++) {
+        values.push(sensorTypeOrCategory[y].id + "");
+    }
+    $('#' + docId).selectpicker('val', values);
+}
+
+function changeSelectedIndex(docId, sensorTypeOrCategory) {
+    let nodes = document.getElementById(docId).children;
+    for (let i = 0; i < nodes.length; i++) {
+        let value = nodes[i].getAttribute("value");
+        if (value && value.toString() === sensorTypeOrCategory.id.toString()) {
+            document.getElementById(docId).selectedIndex = i.toString();
+        }
+    }
+    $('#'+docId).trigger('change');
+}
+
+function insertIndex(docId, values) {
+    let select = document.getElementById(docId);
+    for(let i = 0; i < values.length; i++) {
+        let node = document.createElement("option");
+        node.setAttribute("value", values[i].id);
+        if (docId === "selectType") {
+            node.innerHTML = values[i].sensorType;
+        } else {
+            node.innerHTML = values[i].sensorCategory;
+        }
+        select.appendChild(node);
+    }
+    $('#'+docId).trigger('change');
+}
+
+function updateSensorTypes() {
     const ajax = new XMLHttpRequest();
     ajax.open("GET", "/sensors/types/", true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {
             let values = JSON.parse(ajax.responseText);
-            let select = document.getElementById("selectType");
-            for(let i = 0; i < values.length; i++) {
-                let node = document.createElement("option");
-                node.setAttribute("value", values[i].id);
-                node.innerHTML = values[i].sensorType;
-                select.appendChild(node);
-            }
+            insertIndex("selectType", values)
         }
     };
 }
 
+function updateSensorCategories() {
+    const ajax = new XMLHttpRequest();
+    ajax.open("GET", "/sensors/categories/", true);
+    ajax.send(null);
+    ajax.onreadystatechange = function() {
+        if (ajax.readyState === 4) {
+            let values = JSON.parse(ajax.responseText);
+            insertIndex("selectCategory", values)
+        }
+    };
+}
+
+
+
 function submitData() {
     const sensor_id = document.getElementById("id").value;
     const select = document.getElementById("selectType");
+    const category = document.getElementById("selectCategory");
     const sensor_type_id = select.options[select.selectedIndex].value;
     const sensor_nick = document.getElementById("nickname").value;
     if (sensor_nick.length > 0 && sensor_nick.length < 17 && sensor_type_id !== "" && sensor_id !== "") {
@@ -58,9 +96,17 @@ function submitData() {
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4) {
                 let sensorType = JSON.parse(ajax.responseText);
+                let categories = $(category).find("option:selected");
+                let sensorCategory = [];
+                for (let i = 0; i < categories.length; i++) {
+                    let option = {}
+                    option["id"] = categories[i].value;
+                    option["sensorCategory"] = $(categories[i]).text();
+                    sensorCategory.push(option);
+                }
                 ajax.open("PUT", "/sensors/id/", true);
                 ajax.setRequestHeader("Content-Type", "application/json");
-                let json = {id: 0, sensorId: sensor_id, sensorNick: sensor_nick, sensorType: sensorType}
+                let json = {id: 0, sensorId: sensor_id, sensorNick: sensor_nick, sensorType: sensorType, categories:sensorCategory}
                 ajax.send(JSON.stringify(json));
                 ajax.onreadystatechange = function () {
                     if (ajax.readyState === 4) {
@@ -101,8 +147,6 @@ function checkActive(id) {
         }
     };
 }
-
-updatesensor_types();
 
 document.getElementById("submit").addEventListener("click", function () {
     submitData();
@@ -221,3 +265,14 @@ function exportCSVFile(headers, jsonObject, fileTitle) {
 }
 
 
+
+$('#selectType').on('change', function() {
+    $('#selectType').selectpicker('refresh');
+});
+
+$('#selectCategory').on('change', function() {
+    $('#selectCategory').selectpicker('refresh');
+});
+
+updateSensorCategories();
+updateSensorTypes();

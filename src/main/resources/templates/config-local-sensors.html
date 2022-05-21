@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <link rel='stylesheet' href='../stylesheets/config-local-sensors.css'>
     <link rel='stylesheet' href='../stylesheets/bootstrap.css'>
+    <link rel='stylesheet' href='../stylesheets/bootstrap-select.css'>
     <link rel='stylesheet' href='../stylesheets/template.css'>
     <title>Configuration</title>
 </head>
@@ -64,8 +65,12 @@
 
                     <label  class="form-label" for="type">Sensor Type:</label>
                     <div class="input-group mb-3">
-                        <select class="form-select" id="selectType" aria-label="Select Sensor Type" >
-                            <option >Choose...</option>
+                        <select class="selectpicker" id="selectType" data-size="5" title="Select Sensor Type" >
+                        </select>
+                    </div>
+                    <label  class="form-label" for="category">Sensor Categories:</label>
+                    <div class="input-group mb-3">
+                        <select class="selectpicker" multiple  id="selectCategory" data-size="5" title="Select Sensor Categories" >
                         </select>
                     </div>
                     <label   class="form-label" for="id">Sensor ID:</label>
@@ -117,6 +122,8 @@
 </footer>
 <script src="../javascript/jquery-3.6.0.min.js"></script>
 <script src="../javascript/bootstrap.bundle.js"></script>
+<script src="../javascript/bootstrap2.bundle.js"></script>
+<script src="../javascript/bootstrap-select.js"></script>
 <script src="../javascript/config-local-sensors.js"></script>
 </body>
 </html>

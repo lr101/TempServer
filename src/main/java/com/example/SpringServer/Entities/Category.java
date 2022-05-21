@@ -3,6 +3,8 @@ package com.example.SpringServer.Entities;
 
 import javax.persistence.Id;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -13,6 +15,9 @@ public class Category {
 
     @Column(name = "sensor_category", nullable = false)
     private String sensorCategory = "All Sensors";
+
+    @ManyToMany(mappedBy="categories")
+    private Set<com.example.SpringServer.Entities.Id> ids = new HashSet<>();
 
     public Long getId() {
         return id;

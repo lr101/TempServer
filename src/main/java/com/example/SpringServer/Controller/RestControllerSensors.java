@@ -66,10 +66,9 @@ public class RestControllerSensors {
         if (sensor.getSensorType() == null) {
             sensor.setSensorType(typeRepo.findByTypeId(0L));
         }
-        if (sensor.getSensorCategory() == null) {
-            Set<Category> c = new HashSet<>();
-            c.add(categoryRepository.findByCategoryId(0L));
-            sensor.setSensorCategory(c);
+        if (sensor.getCategories().size() == 0) {
+            sensor.addCategory(categoryRepository.findByCategoryId(0L));
+            System.out.println(sensor.getCategories());
         }
         Id id = sensorRepo.save(sensor);
         jdbc.createEntryTable(sensor.getSensorId());

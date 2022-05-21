@@ -40,7 +40,7 @@ public class SensorRepositoryImpl implements SensorRepositoryCustom {
     @Override
     public Set<Category> findSensorCategoriesById(String sensorId) {
         Id id = this.findById(sensorId);
-        return id == null ? null : id.getSensorCategory();
+        return id == null ? null : id.getCategories();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SensorRepositoryImpl implements SensorRepositoryCustom {
         Id id = this.findById(sensor.getSensorId());
         id.setSensorNick(sensor.getSensorNick());
         id.setSensorType(sensor.getSensorType());
-        id.setSensorCategory(sensor.getSensorCategory());
+        id.setCategories(sensor.getCategories());
         return id;
     }
 

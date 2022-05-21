@@ -1,6 +1,6 @@
 package com.example.SpringServer.Entities;
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,9 +16,13 @@ public class Id {
     @JoinColumn(name = "sensor_type_id")
     private Type sensorType;
 
-    @OneToMany
-    @JoinColumn(name = "sensor_categorie_id")
-    private Set<Category> sensorCategory;
+    @ManyToMany
+    @JoinTable(
+            name = "Id_Category",
+            joinColumns = { @JoinColumn(name = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "category_id") }
+    )
+    private Set<Category> categories = new HashSet<>();
 
     @javax.persistence.Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,11 +60,15 @@ public class Id {
         this.id = id;
     }
 
-    public Set<Category> getSensorCategory() {
-        return sensorCategory;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setSensorCategory(Set<Category> sensorCategory) {
-        this.sensorCategory = sensorCategory;
+    public void setCategories(Set<Category> sensorCategory) {
+        this.categories = sensorCategory;
+    }
+
+    public void addCategory(Category category) {
+        this.categories.add(category);
     }
 }
