@@ -12,7 +12,7 @@ public class Type {
     private Long id;
 
     @Column(name = "sensor_type", nullable = false)
-    private String sensorType = "Default";
+    private String sensorType = "default";
 
     @Column(name = "unit", nullable = false)
     private String unit = "dUnit";
