@@ -23,10 +23,7 @@ public class SshConfiguration implements ServletContextInitializer {
 
     public SshConfiguration() {
         try {
-            Properties p = new Properties();
-            p.load(getClass().getResourceAsStream("/application.properties"));
-// If the configuration file contains ssh.forward.enabled attribute , Then use ssh forward
-            if(p.getProperty("ssh.forward.enabled")!=null){
+            if(System.getenv("SSH_ENABLED")!=null){
                 JSch jsch = new JSch();
                 File file = getKeyFile();
                 jsch.addIdentity(file.getAbsolutePath());
