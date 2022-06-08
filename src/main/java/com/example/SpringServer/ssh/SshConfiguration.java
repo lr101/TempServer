@@ -2,10 +2,14 @@ package com.example.SpringServer.ssh;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+
+import com.example.SpringServer.updateDatabase.main.ChangeManager;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
+import org.springframework.context.event.EventListener;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 
@@ -14,6 +18,8 @@ import java.util.Properties;
 
 @Component
 public class SshConfiguration implements ServletContextInitializer {
+
+    ChangeManager manager;
 
     public SshConfiguration() {
         try {
@@ -30,6 +36,7 @@ public class SshConfiguration implements ServletContextInitializer {
                 session.setPortForwardingL(System.getenv("SSH_FROM_IP"),Integer.parseInt(System.getenv("SSH_FROM_PORT")) ,System.getenv("SSH_TO_HOST") ,Integer.parseInt(System.getenv("SSH_TO_PORT")) );
                 System.out.println("SSH connection successful");
             }
+            manager = new ChangeManager();
 
         } catch (Exception e) {
             System.out.println("ssh settings is failed. skip!" + e);
@@ -49,5 +56,10 @@ public class SshConfiguration implements ServletContextInitializer {
         out.close();
         file.deleteOnExit();
         return file;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void pushManager(){
+        manager.runPush();
     }
 }

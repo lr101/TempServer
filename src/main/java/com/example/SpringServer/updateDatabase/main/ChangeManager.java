@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @Component
-public class ChangeManager implements ServletContextInitializer  {
+public class ChangeManager {
 
     private static final int startVersion = 1;
     private static final int endVersion = 2;
@@ -86,18 +86,12 @@ public class ChangeManager implements ServletContextInitializer  {
        version.initDelete();
     }
 
-    @EventListener(ApplicationReadyEvent.class)
+
     public void runPush() {
         if (System.getenv("update") != null && Boolean.parseBoolean(System.getenv("update"))) {
             System.out.println("[Inserting data]");
             runFromToVersion(startVersion, endVersion);
             version.initPush();
         }
-    }
-
-
-    @Override
-    public void onStartup(ServletContext servletContext) throws ServletException {
-
     }
 }
