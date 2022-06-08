@@ -36,7 +36,7 @@ public class SshConfiguration implements ServletContextInitializer {
                 session.setPortForwardingL(System.getenv("SSH_FROM_IP"),Integer.parseInt(System.getenv("SSH_FROM_PORT")) ,System.getenv("SSH_TO_HOST") ,Integer.parseInt(System.getenv("SSH_TO_PORT")) );
                 System.out.println("SSH connection successful");
             }
-            //manager = new ChangeManager();
+            manager = new ChangeManager();
 
         } catch (Exception e) {
             System.out.println("ssh settings is failed. skip!" + e);
