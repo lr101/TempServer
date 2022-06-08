@@ -24,11 +24,13 @@ public class SshConfiguration implements ServletContextInitializer {
     public SshConfiguration() {
         try {
             if(System.getenv("SSH_ENABLED")!=null){
-                System.out.println("TESTTTTTTTTTTTTTTTT");
+                System.out.println("t1t");
                 JSch jsch = new JSch();
                 File file = getKeyFile();
                 jsch.addIdentity(file.getAbsolutePath());
+                System.out.println("t2");
                 Session session = jsch.getSession(System.getenv("SSH_F_USER"),System.getenv("SSH_F_IP"),Integer.parseInt(System.getenv("SSH_F_PORT")));
+                System.out.println("t3");
                 session.setConfig("StrictHostKeyChecking", "no");
                 session.connect();
                 session.setPortForwardingL(System.getenv("SSH_FROM_IP"),Integer.parseInt(System.getenv("SSH_FROM_PORT")) ,System.getenv("SSH_TO_HOST") ,Integer.parseInt(System.getenv("SSH_TO_PORT")) );
@@ -47,7 +49,6 @@ public class SshConfiguration implements ServletContextInitializer {
     private File getKeyFile() throws FileNotFoundException {
         File file = new File("privateKey");
         String key = System.getenv("SSH_KEY").substring(31);
-        System.out.println(key);
         key = key.substring(0, key.length() - 29).replaceAll(" ", "\n");
         key = "-----BEGIN RSA PRIVATE KEY-----" + key + "-----END RSA PRIVATE KEY-----";
         PrintWriter out = new PrintWriter(file.getAbsolutePath());
