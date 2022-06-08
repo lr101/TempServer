@@ -61,3 +61,5 @@ Einstellungen speichern mit:
 Ardiono IDE ESP8266 Library: http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
 Tile CSS: https://1linelayouts.glitch.me/
+
+sudo nano /var/log/postgresql/postgresql-13-main.log - to see postgres logs
