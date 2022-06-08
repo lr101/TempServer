@@ -24,6 +24,7 @@ public class SshConfiguration implements ServletContextInitializer {
     public SshConfiguration() {
         try {
             if(System.getenv("SSH_ENABLED")!=null){
+                System.out.println("TESTTTTTTTTTTTTTTTT");
                 JSch jsch = new JSch();
                 File file = getKeyFile();
                 jsch.addIdentity(file.getAbsolutePath());

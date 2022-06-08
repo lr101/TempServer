@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Component
 public class ChangeManager {
 
     private static final int startVersion = 1;
