@@ -34,7 +34,7 @@ public class SshConfiguration implements ServletContextInitializer {
                 session.setPortForwardingL(System.getenv("SSH_FROM_IP"),Integer.parseInt(System.getenv("SSH_FROM_PORT")) ,System.getenv("SSH_TO_HOST") ,Integer.parseInt(System.getenv("SSH_TO_PORT")) );
                 System.out.println("SSH connection successful");
             }
-            manager = new ChangeManager();
+            //manager = new ChangeManager();
 
         } catch (Exception e) {
             System.out.println("ssh settings is failed. skip!" + e);
@@ -47,6 +47,7 @@ public class SshConfiguration implements ServletContextInitializer {
     private File getKeyFile() throws FileNotFoundException {
         File file = new File("privateKey");
         String key = System.getenv("SSH_KEY").substring(31);
+        System.out.println(key);
         key = key.substring(0, key.length() - 29).replaceAll(" ", "\n");
         key = "-----BEGIN RSA PRIVATE KEY-----" + key + "-----END RSA PRIVATE KEY-----";
         PrintWriter out = new PrintWriter(file.getAbsolutePath());
