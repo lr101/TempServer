@@ -39,20 +39,20 @@ public class ChangeManager {
     private List<ChangeInterface> version1() {
         List<ChangeInterface> changes = new ArrayList<>();
         List<Column> columns = new ArrayList<>();
-        //id
-        columns.add(new Column( "id", Types.BIGINT, -1L));
-        columns.add(new Column( "sensor_nick", Types.VARCHAR, "newSensor"));
-        columns.add(new Column( "sensor_type_id", Types.BIGINT, 0L));
-        columns.add(new Column( "sensor_id", Types.VARCHAR, null));
-        changes.add(new ChangeCreateEntity(new Entity("id", columns), version));
         //type
-        columns.clear();
         columns.add(new Column( "id", Types.BIGINT, 0L));
         columns.add(new Column( "sensor_type", Types.VARCHAR, "Default"));
         columns.add(new Column( "unit", Types.VARCHAR, "dUnit"));
         columns.add(new Column( "repetitions", Types.INTEGER, 10));
         columns.add(new Column( "sleep_time", Types.INTEGER, 10));
         changes.add(new ChangeCreateEntity(new Entity("type", columns), version));
+        //id
+        columns.clear();
+        columns.add(new Column( "id", Types.BIGINT, -1L));
+        columns.add(new Column( "sensor_nick", Types.VARCHAR, "newSensor"));
+        columns.add(new Column( "sensor_type_id", Types.BIGINT, 0L));
+        columns.add(new Column( "sensor_id", Types.VARCHAR, null));
+        changes.add(new ChangeCreateEntity(new Entity("id", columns), version));
         return changes;
     }
 

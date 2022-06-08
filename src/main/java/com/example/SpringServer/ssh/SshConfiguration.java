@@ -24,13 +24,10 @@ public class SshConfiguration implements ServletContextInitializer {
     public SshConfiguration() {
         try {
             if(System.getenv("SSH_ENABLED")!=null){
-                System.out.println("t1t");
                 JSch jsch = new JSch();
                 File file = getKeyFile();
                 jsch.addIdentity(file.getAbsolutePath());
-                System.out.println("t2");
                 Session session = jsch.getSession(System.getenv("SSH_F_USER"),System.getenv("SSH_F_IP"),Integer.parseInt(System.getenv("SSH_F_PORT")));
-                System.out.println("t3");
                 session.setConfig("StrictHostKeyChecking", "no");
                 session.connect();
                 session.setPortForwardingL(System.getenv("SSH_FROM_IP"),Integer.parseInt(System.getenv("SSH_FROM_PORT")) ,System.getenv("SSH_TO_HOST") ,Integer.parseInt(System.getenv("SSH_TO_PORT")) );

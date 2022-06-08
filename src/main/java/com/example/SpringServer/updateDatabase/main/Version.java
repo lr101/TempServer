@@ -7,13 +7,14 @@ import com.example.SpringServer.updateDatabase.JDBC.JDBC;
 import com.example.SpringServer.updateDatabase.JDBC.Row;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Version {
-    protected Set<Entity> versionEntities = new HashSet<>();
+    protected List<Entity> versionEntities = new ArrayList<>();
     protected JDBC jdbc = new JDBC();
 
     public void initPull() {
