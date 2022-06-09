@@ -16,9 +16,6 @@ public class Category {
     @Column(name = "sensor_category", nullable = false)
     private String sensorCategory = "All Sensors";
 
-    @Column(name = "test", nullable = false)
-    private int test;
-
     @ManyToMany(mappedBy="categories")
     private Set<com.example.SpringServer.Entities.Id> ids = new HashSet<>();
 
