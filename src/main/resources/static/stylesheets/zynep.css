@@ -232,4 +232,12 @@
         width: 75%;
     }
 
+    .zeynep ul > li > a {
+        font-size: 30px;
+    }
+
+    .menu-content {
+        font-size: 30px;
+    }
+
 }

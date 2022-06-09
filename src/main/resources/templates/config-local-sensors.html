@@ -11,9 +11,6 @@
 </head>
 <body>
 <header class="text-center">
-    <div class="hamburger-container">
-        <div class="hamburger"></div>
-    </div>
     <div class="zeynep first" data-menu-name="first">
         <ul>
             <li>
@@ -71,7 +68,9 @@
     <main id="main" th:data-length="${sensors.size()}" class="container-fluid">
         <div class="row">
             <nav class="navbar lightgrey">
-                <a class="navbar-brand darkgrey">Navigation</a>
+                <div class="hamburger-container">
+                    <div class="hamburger"></div>
+                </div>
                 <form  method="get" action="/" class="wrapper">
                     <input class="button"  type="submit" value="home">
                 </form>
