@@ -63,12 +63,12 @@ button {
 .button {
     text-align: center;
     width: auto;
-    height: 6vh;
+    height: 45px;
     padding-left: 15px;
     padding-right: 15px;
-    font-size: 2vh;
+    font-size: 11px;
     text-transform: uppercase;
-    letter-spacing: 0.5vh;
+    letter-spacing: 3px;
     font-weight: 500;
     color: rgba(32, 32, 32, 1);;
     background-color: #fff;
