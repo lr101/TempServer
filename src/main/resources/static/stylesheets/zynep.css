@@ -82,7 +82,7 @@
 .zeynep ul > li > a {
     color: inherit;
     display: block;
-    font-size: 100%;
+    font-size: 3vh;
     font-weight: bold;
     padding: 2.5% 2.5%;
     text-decoration: none;
@@ -92,7 +92,7 @@
 .menu-content {
     color: inherit;
     display: inline;
-    font-size: 100%;
+    font-size: 3vh;
     font-weight: bold;
     padding: 2.5% 2.5%;
     text-decoration: none;
@@ -153,7 +153,7 @@
     position:relative;
     color: inherit;
     display: block;
-    font-size: 20px;
+    font-size: 5vh;
     font-weight: bold;
     padding: 18px 20px 18px 40px;
     text-decoration: none;
@@ -172,7 +172,7 @@
 .zeynep .submenu > label {
     color: #e77691;
     display: block;
-    font-size: 13px;
+    font-size: 4vh;
     font-weight: bold;
     margin-bottom: 8px;
     margin-top: 19px;
@@ -233,11 +233,11 @@
     }
 
     .zeynep ul > li > a {
-        font-size: 30px;
+        font-size: 50px;
     }
 
     .menu-content {
-        font-size: 30px;
+        font-size: 50px;
     }
 
 }
