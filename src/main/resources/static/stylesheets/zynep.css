@@ -1,0 +1,225 @@
+.zeynep {
+    top: 0;
+    bottom: 0;
+    position: fixed;
+    overflow: hidden;
+    overflow-y: auto;
+    z-index: 1011;
+    pointer-events: none;
+    transform: translateX(-100%) translateZ(0px);
+    -webkit-overflow-scrolling: touch;
+}
+
+.zeynep:not(.no-transition),
+.zeynep .submenu:not(.no-transition) {
+    /* if transitions are not disabled */
+    transition: all 250ms;
+}
+
+.zeynep-overlay {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: none;
+    position: fixed;
+    z-index: 1010;
+    background-color: rgba(0, 0, 0, .42);
+}
+
+.zeynep-opened .zeynep-overlay {
+    display: block;
+}
+
+.zeynep.opened {
+    pointer-events: auto;
+    transform: translateX(0px) translateZ(0px);
+}
+
+.zeynep.submenu-opened {
+    overflow: hidden;
+}
+
+.zeynep .submenu {
+    top: 0;
+    bottom: 0;
+    min-height: 100%;
+    overflow: hidden;
+    overflow-y: auto;
+    position: fixed;
+    width: 100%;
+    pointer-events: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.zeynep .submenu.opened {
+    left: 0;
+    pointer-events: auto;
+}
+
+.zeynep .submenu.opened:not(.current) {
+    overflow: hidden;
+}
+
+
+/* zeynepjs menu styles */
+.zeynep {
+    background-color: #ffffff;
+    color: #404143;
+    width: 295px;
+}
+
+.zeynep ul {
+    list-style-type: none;
+    padding: 0;
+    padding-left: 20px;
+    -webkit-overflow-scrolling: touch;
+}
+.zeynep ul > li {
+    display: block;
+}
+
+.zeynep ul > li > a {
+    color: inherit;
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 18px 20px;
+    text-decoration: none;
+    transition: all 150ms;
+}
+
+.menu-content {
+    color: inherit;
+    display: inline;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 18px 20px;
+    text-decoration: none;
+    transition: all 150ms;
+    background: none no-repeat right 20px center;
+    border: none;
+    outline: inherit;
+    width: 100%
+}
+
+.submenu ul > li:not(:last-child) {
+    border-bottom: 1px solid #efefef;
+}
+
+.zeynep ul > li > a:hover {
+    background-color: #efefef;
+    border-radius: 3px;
+}
+
+.menu-content:hover {
+    background-color: #efefef;
+    border-radius: 3px;
+}
+
+.zeynep ul > li:not(:last-child) > a {
+    border-bottom: 1px solid #efefef;
+}
+
+
+.zeynep ul > li.has-submenu > a:after {
+    font-size: inherit;
+    padding-left: 10px;
+    content: " >";
+}
+
+.zeynep ul > li.has-submenu > a {
+    background-position: right 20px center;
+    background-repeat: no-repeat;
+    background-size: 8px 14px;
+}
+
+/* zeynepjs submenu styles */
+.zeynep .submenu {
+    background-color: #ffffff;
+    left: 295px;
+}
+
+.zeynep .submenu-header {
+    background-position: left 20px center;
+    background-repeat: no-repeat;
+    background-size: 8px 14px;
+    border-bottom: solid 1px #efefef;
+    cursor: pointer;
+    position: relative;
+}
+
+.zeynep .submenu-header > a {
+    position:relative;
+    color: inherit;
+    display: block;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 18px 20px 18px 40px;
+    text-decoration: none;
+}
+
+.zeynep .submenu-header > a:before {
+    padding-right: 10px;
+    content: "<";
+}
+
+.zeynep .submenu-header > a:after {
+    padding-left: 10px;
+    content: " ";
+}
+
+.zeynep .submenu > label {
+    color: #e77691;
+    display: block;
+    font-size: 13px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-top: 19px;
+    opacity: .5;
+    padding-left: 40px;
+    width: 100%;
+}
+
+.page-body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    top: -85px;
+}
+
+
+.hamburger-container {
+    background-color: #FD898A;
+    width: 200px;
+    height: 200px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 50%;
+    margin-top: -115px;
+    margin-left: -123px;
+    z-index: 10;
+}
+
+.hamburger {
+    width: 22px;
+    position: absolute;
+    left: 142px;
+    border-top: 2px solid #fff;
+    cursor: pointer;
+    z-index: 1;
+    top: 136px;
+}
+
+.hamburger:after {
+    content: "";
+    display: block;
+    border-top: 2px solid #fff;
+    margin-top: 4px;
+}
+.hamburger:before {
+    content: "";
+    display: block;
+    border-top: 2px solid #fff;
+    margin-top: 4px;
+}
