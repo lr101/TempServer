@@ -7,8 +7,8 @@
 #include <WiFiClientSecure.h>
 #include "config.h"
 
-//Define GPIO pin D2 as Data-pin
-#define ONE_WIRE_BUS 4
+//Define GPIO pin D6 as Data-pin
+#define ONE_WIRE_BUS 12
 
 String convertSensorID(DeviceAddress);
 

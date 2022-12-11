@@ -63,3 +63,6 @@ Ardiono IDE ESP8266 Library: http://arduino.esp8266.com/stable/package_esp8266co
 Tile CSS: https://1linelayouts.glitch.me/
 
 sudo nano /var/log/postgresql/postgresql-13-main.log - to see postgres logs
+
+postgres login unix:  sudo su - postgres
+-> Probleme in "/pg_hba.conf" der Datenbank müssen Loginmethoden für die Lokale Benutzung verändert werden.

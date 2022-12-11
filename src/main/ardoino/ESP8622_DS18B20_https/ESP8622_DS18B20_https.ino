@@ -63,7 +63,7 @@ void setup() {
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/");
-       
+  ping();
   /*
    * Setup Thermometers
    * Send Thermometer serial number to server to setup db
@@ -88,9 +88,9 @@ void setup() {
        **/
       WiFiClientSecure client; //WiFiClientSecure
       client.setInsecure();
-      client.connect(host.c_str(), 80);
+      client.connect(host.c_str(), 443);
       HTTPClient http;
-
+      
       
       //Connect to WebServer:
       if(http.begin(client, (host + "/sensors/id/").c_str())){
@@ -166,6 +166,7 @@ void loop() {
     }
   } 
   delay(avgSleepTime);
+  ping();
 }
 
 float getAvg(float* p, int repetitions) {
@@ -224,4 +225,19 @@ String decToHexa(int n)
         hex += hexaDeciNum[j];
 
     return hex;
+}
+
+void ping() {
+  const char* pinHost = "https://mona-sticker.herokuapp.com";
+  
+  WiFiClientSecure client2; //WiFiClientSecure
+  client2.setInsecure();
+  client2.connect(pinHost, 443);
+  HTTPClient http;
+  Serial.println(pinHost);
+  http.begin(client2, pinHost);
+  http.GET();
+  http.end();
+  Serial.println("done");
+  client2.stop();
 }
