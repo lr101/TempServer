@@ -9,7 +9,7 @@ on:
 
 jobs:
   container-job:
-    environment: en1
+    environment: production
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,6 +38,10 @@ jobs:
 
     - name: Build with Maven
       run: mvn -B package --file pom.xml -DskipTests
+      env:
+        DB_USER: postgres
+        DB_PASSWORD: postgres
+        DATASOURCE_URL: jdbc:postgresql://127.0.0.1:5432/postgres
 
     - name: Publish to GitHub Packages Apache Maven
       run: mvn deploy -s $GITHUB_WORKSPACE/settings.xml
