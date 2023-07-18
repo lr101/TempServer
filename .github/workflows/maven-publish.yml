@@ -43,4 +43,4 @@ jobs:
       with:          
         context: .          
         push: true          
-        tags: spring-senser-web/lrprojects:latest
+        tags: lrprojects/sensor-spring-web:latest
