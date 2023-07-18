@@ -9,7 +9,7 @@ on:
 
 jobs:
   container-job:
-    environment: production
+    environment: en1
     runs-on: ubuntu-latest
     permissions:
       contents: read
