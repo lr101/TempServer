@@ -8,7 +8,7 @@ on:
     types: [created]
 
 jobs:
-  build:
+  container-job:
     environment: production
     runs-on: ubuntu-latest
     permissions:
