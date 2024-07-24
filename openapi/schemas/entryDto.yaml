@@ -1,0 +1,17 @@
+type: object
+properties:
+  id:
+    type: integer
+    format: int64
+    description: The ID of the entry
+  sensorId:
+    type: string
+    description: The ID of the sensor
+  timestamp:
+    type: string
+    format: date-time
+    description: The timestamp of the entry
+  value:
+    type: number
+    format: double
+    description: The value of the entry

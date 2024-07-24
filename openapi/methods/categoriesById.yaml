@@ -1,0 +1,36 @@
+get:
+  summary: Get a sensor category by ID
+  operationId: getSensorCategoryById
+  tags:
+    - Sensor Categories
+  parameters:
+    - name: categoryId
+      in: path
+      required: true
+      description: The ID of the sensor category to retrieve
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '200':
+      description: The sensor category with the specified ID
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/categoryDto.yaml'
+delete:
+  summary: Delete a sensor category by ID
+  operationId: deleteSensorCategory
+  tags:
+    - Sensor Categories
+  parameters:
+    - name: categoryId
+      in: path
+      required: true
+      description: The ID of the sensor category to delete
+      schema:
+        type: integer
+        format: int64
+  responses:
+    '204':
+      description: No content, category deleted successfully

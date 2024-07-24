@@ -1,0 +1,6 @@
+name: sensorId
+in: path
+required: true
+description: The ID of the sensor
+schema:
+  type: string

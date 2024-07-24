@@ -1,0 +1,13 @@
+type: object
+properties:
+  sensorId:
+    type: string
+    description: The ID of the sensor
+  sensorType:
+    type: string
+    nullable: true
+    description: The type of the sensor
+  sensorNick:
+    type: string
+    nullable: true
+    description: The nickname of the sensor

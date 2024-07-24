@@ -1,0 +1,52 @@
+get:
+  summary: Get all sensor categories
+  operationId: getAllSensorCategories
+  tags:
+    - Sensor Categories
+  responses:
+    '200':
+      description: A list of sensor categories
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../schemas/categoryDto.yaml'
+put:
+  summary: Update a sensor category
+  operationId: updateSensorCategory
+  tags:
+    - Sensor Categories
+  requestBody:
+    description: The sensor category to update
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/categoryDto.yaml'
+  responses:
+    '200':
+      description: The updated sensor category
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/categoryDto.yaml'
+post:
+  summary: Create a new sensor category
+  operationId: createSensorCategory
+  tags:
+    - Sensor Categories
+  requestBody:
+    description: The sensor category to create
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/categoryDto.yaml'
+  responses:
+    '200':
+      description: The created sensor category
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/categoryDto.yaml'

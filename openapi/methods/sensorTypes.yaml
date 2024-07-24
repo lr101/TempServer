@@ -1,0 +1,33 @@
+get:
+  summary: Get all sensor types
+  operationId: getSensorTypes
+  tags:
+    - Sensor Types
+  responses:
+    '200':
+      description: A list of sensor types
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: '../schemas/typeDto.yaml'
+post:
+  summary: Create a new sensor type
+  operationId: postSensorType
+  tags:
+    - Sensor Types
+  requestBody:
+    description: The sensor type to create
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/typeDto.yaml'
+  responses:
+    '200':
+      description: The created sensor type
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/typeDto.yaml'

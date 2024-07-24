@@ -1,0 +1,43 @@
+get:
+  summary: Get a sensor type by ID
+  operationId: getSensorTypeById
+  tags:
+    - Sensor Types
+  parameters:
+    - $ref: '../parameters/id.yaml'
+  responses:
+    '200':
+      description: The sensor type with the specified ID
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/typeDto.yaml'
+put:
+  summary: Update a sensor type
+  operationId: putSensorType
+  tags:
+    - Sensor Types
+  requestBody:
+    description: The sensor type to update
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/typeDto.yaml'
+  responses:
+    '200':
+      description: The updated sensor type
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/typeDto.yaml'
+delete:
+  summary: Delete a sensor type by ID
+  operationId: deleteSensorType
+  tags:
+    - Sensor Types
+  parameters:
+    - $ref: '../parameters/sensorTypeId.yaml'
+  responses:
+    '204':
+      description: No content, sensor type deleted successfully

@@ -1,0 +1,7 @@
+name: date1
+in: query
+required: false
+description: The start date (timestamp) for filtering entries
+schema:
+  type: integer
+  format: int64

@@ -1,0 +1,43 @@
+get:
+  summary: Get a sensor by ID
+  operationId: getSensorById
+  tags:
+    - Sensors
+  parameters:
+    - $ref: '../parameters/sensorId.yaml'
+  responses:
+    '200':
+      description: The sensor with the specified ID
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/sensorDto.yaml'
+put:
+  summary: Update a sensor
+  operationId: putSensor
+  tags:
+    - Sensors
+  requestBody:
+    description: The sensor to update
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/sensorDto.yaml'
+  responses:
+    '200':
+      description: The updated sensor
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/sensorDto.yaml'
+delete:
+  summary: Delete a sensor by ID
+  operationId: deleteSensor
+  tags:
+    - Sensors
+  parameters:
+    - $ref: '../parameters/sensorId.yaml'
+  responses:
+    '204':
+      description: No content, sensor deleted successfully
