@@ -22,4 +22,4 @@ influxdb:
   token: ${INFLUXDB_TOKEN}
   bucket: ${INFLUXDB_BUCKET}
   org: ${INFLUXDB_ORG}
-  enabled: ${INFLUXDB_ENABLED}
+  enabled: true

@@ -63,7 +63,7 @@ void setup() {
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/");
-  ping();
+  ping(host.c_str());
   /*
    * Setup Thermometers
    * Send Thermometer serial number to server to setup db
@@ -114,6 +114,12 @@ void setup() {
               infos[i].sensor_id = sensor_id;
               infos[i].values = new float[infos[i].repetitions];
               infos[i].curValue = infos[i].values;
+              Serial.println("Repetitions: " );
+              Serial.println(infos[i].repetitions);
+              Serial.println("Average sleep Time: ");
+              Serial.println(avgSleepTime);
+              Serial.println("New value every (in seconds): ");
+              Serial.println((avgSleepTime * infos[i].repetitions + (infos[i].repetitions * numberOfDevices * 400)) / 1000); // 450ms is the average time to read a sensor value
             }
             http.end();
          }
@@ -166,7 +172,7 @@ void loop() {
     }
   } 
   delay(avgSleepTime);
-  ping();
+  // ping(host.c_str());
 }
 
 float getAvg(float* p, int repetitions) {
@@ -227,8 +233,7 @@ String decToHexa(int n)
     return hex;
 }
 
-void ping() {
-  const char* pinHost = "https://mona-sticker.herokuapp.com";
+void ping(const char* pinHost) {
   
   WiFiClientSecure client2; //WiFiClientSecure
   client2.setInsecure();

@@ -8,6 +8,7 @@ get:
     - $ref: '../parameters/date1.yaml'
     - $ref: '../parameters/date2.yaml'
     - $ref: '../parameters/limit.yaml'
+    - $ref: '../parameters/interval.yaml'
   responses:
     '200':
       description: A list of sensor entries

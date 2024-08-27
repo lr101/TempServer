@@ -6,18 +6,16 @@ info:
 servers:
   - url: 'http'
 paths:
-  /rest/v1/categories/:
+  /rest/v1/categories:
     $ref: './methods/categories.yaml'
   /rest/v1/categories/{categoryId}:
     $ref: './methods/categoriesById.yaml'
   /rest/v1/sensors/{sensorId}:
-    $ref: './methods/sensorsEntryById.yaml'
+    $ref: './methods/sensorsById.yaml'
   /rest/v1/sensors:
     $ref: './methods/sensors.yaml'
   /rest/v1/sensors/{sensorId}/entry:
-    $ref: './methods/sensorsById.yaml'
-  /rest/v1/sensors/{sensorId}/graph:
-    $ref: './methods/sensorsGraph.yaml'
+    $ref: './methods/sensorsEntryById.yaml'
   /rest/v1/types:
     $ref: './methods/sensorTypes.yaml'
   /rest/v1/types/{typeId}:

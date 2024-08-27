@@ -1,6 +1,6 @@
 name: interval
 in: query
-required: true
+required: false
 description: The interval for the graph data
 schema:
   type: integer

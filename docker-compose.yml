@@ -6,7 +6,7 @@ services:
     ports:
       - 8081:8081
     env_file:
-      - ./.env
+      -  .env
     environment:
       DB_HOST: db
       EMAIL: lr.dev.projects@gmail.com
@@ -22,8 +22,8 @@ services:
       # SECRET
     depends_on:
       - db
-    networks:
-      - net
+      - influxdb
+
   db:
     image: postgres:16
     restart: unless-stopped
@@ -34,10 +34,4 @@ services:
       - ./postgres-data:/var/lib/postgresql/data
       - ./backup:/backup
     env_file:
-      - ./.env
-    networks:
-      - net
-
-networks:
-  net:
-    name: "stick-it-network"
+      - .env

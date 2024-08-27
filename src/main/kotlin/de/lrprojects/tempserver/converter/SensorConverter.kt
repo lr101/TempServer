@@ -13,5 +13,5 @@ fun Sensor.toDto() = SensorDto().also {
 fun SensorDto.toEntity(typeService: TypeService) = Sensor().also {
     it.id = this.sensorId
     it.sensorNick = this.sensorNick
-    it.type = typeService.getTypeByName(this.sensorType)
+    it.type = this.sensorType?.let { type -> typeService.getTypeByName(type) }
 }

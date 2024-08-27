@@ -1,15 +1,15 @@
 let length = 0;
-let list = getSensors();
+let list = [];
 function getData() {
 
     let date = new Date(new Date().getTime());
     date.setMinutes(date.getMinutes() - 10);
-    date = date.getTime();
+    date = date.toISOString();
     for (let i = 0; i < length; i++) {
 
         let id = document.getElementById("sensor_" + i).getAttribute("data-id");
         const ajax = new XMLHttpRequest();
-        ajax.open("GET", "/sensors/" + id + "?date2=" + date + "&limit=1" , true);
+        ajax.open("GET", "/rest/v1/sensors/" + id + "/entry?date2=" + date + "&limit=1" , true);
         ajax.send(null);
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4) {
@@ -18,7 +18,7 @@ function getData() {
                     document.getElementById("value_" + i).innerHTML = "No Data";
                 } else {
                     let unit = document.getElementById("value_" + i).getAttribute("data-unit");
-                    document.getElementById("value_" + i).innerHTML = list[list.length - 1].entryValue + unit;
+                    document.getElementById("value_" + i).innerHTML = list[list.length - 1].value + unit;
                 }
             }
         };
@@ -40,7 +40,7 @@ function setListeners(classSelector) {
 
 function getSensors() {
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/id/" , true);
+    ajax.open("GET", "/rest/v1/sensors" , true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {
@@ -180,6 +180,7 @@ function filterListener(id, filterType) {
  */
 $(function() {
 
+    getSensors();
     length = document.getElementById("main").getAttribute("data-length");
     setListeners(".col-4")
     getData();

@@ -127,7 +127,7 @@ function submitData() {
 function checkActive(id) {
     let date = new Date(new Date().getTime());
     date.setMinutes(date.getMinutes() - 10);
-    date = date.getTime();
+    date = date.toISOString();
     const ajax = new XMLHttpRequest();
     ajax.open("GET", "/sensors/" + id + "?date2=" + date + "&limit=1" , true);
     ajax.send(null);
@@ -197,7 +197,7 @@ function alterTempData (method) {
         date2.setMinutes(date2.getMinutes());
         if (date1 > date2) {
             const ajax = new XMLHttpRequest();
-            ajax.open(method, "/sensors/" + (method === "DELETE" ? "delete/": "")  + id + "?date1=" + date1.getTime() + "&date2=" + date2.getTime(), true);
+            ajax.open(method, "/sensors/" + (method === "DELETE" ? "delete/": "")  + id + "?date1=" + date1.toISOString() + "&date2=" + date2.toISOString(), true);
             ajax.setRequestHeader("Content-Type", "text/html");
             ajax.send(null);
             ajax.onreadystatechange = function () {

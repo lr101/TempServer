@@ -25,8 +25,8 @@
           <ul>
             <li th:each="sensor: ${sensors}">
               <form action="/display" method="get" >
-                <input hidden name="sensor_id" th:value="${sensor.getSensorId()}">
-                <input class="menu-content" th:id="'dropdown_' + ${sensor.getSensorId()}" type="submit" th:value="${sensor.sensorNick}">
+                <input hidden name="sensor_id" th:value="${sensor.getId()}">
+                <input class="menu-content" th:id="'dropdown_' + ${sensor.getId()}" type="submit" th:value="${sensor.getSensorNick()}">
               </form>
             </li>
           </ul>
@@ -62,7 +62,7 @@
 </header>
 <div class="main page-body">
   <div class="row header">
-    <h1 id="title" th:data-id="${thisSensor.getSensorId()}" th:text="${thisSensor.getSensorNick()}"></h1>
+    <h1 id="title" th:data-id="${thisSensor.getId()}" th:text="${thisSensor.getType() != null ? thisSensor.getType().getDescription() : ''}"></h1>
   </div>
   <main id="main">
     <div class="row">
@@ -78,7 +78,7 @@
 
     <div class="row" >
       <section class="col-12 displayRowContainer">
-        <h1 id="current" class="displayRow" th:data-unit="${thisSensor.getSensorType().getUnit()}">Current Value: LOADING...</h1>
+        <h1 id="current" class="displayRow" th:data-unit="${thisSensor.getType() != null ? thisSensor.getType().getDescription() : 'Not set'}">Current Value: LOADING...</h1>
       </section>
     </div>
     <div class="row">
@@ -108,7 +108,7 @@
     </div>
     <div class="row">
       <section class="col-12 displayRowContainer">
-        <h1 class="displayRow" th:text="'Sensor Type: ' + ${thisSensor.getSensorType().getSensorType()}"></h1>
+        <h1 class="displayRow" th:text="'Sensor Type: ' + ${thisSensor.getType() != null ? thisSensor.getType().getTypeName(): 'Not set'}"></h1>
       </section>
     </div>
   </main>

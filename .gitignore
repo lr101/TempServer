@@ -38,3 +38,4 @@ build/
 ### other ###
 /bw-cloud/
 /update.sh
+/.env

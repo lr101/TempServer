@@ -81,13 +81,13 @@ function getDataGraph(offset, date1, date2) {
     if (date1 === undefined)  date1 = getCurrentDate(0);
     if (date2 === undefined)  date2 = getCurrentDate(offset);
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/display/graph?sensor_id=" + id + "&date1=" + date1 + "&date2=" + date2 + "&timezone=" + getTimezone() + "&interval=" + (offset/6) , true);
+    ajax.open("GET", `/rest/v1/sensors/${id}/entry?sensor_id=` + id + "&date1=" + date1 + "&date2=" + date2 + "&interval=" + (offset/6) , true);
     ajax.send(null);
     ajax.onreadystatechange = function () {
         if (ajax.readyState === 4) {
             let values = JSON.parse(ajax.responseText);
-            let dates = values.dates.map(date => (new Date(date)).toLocaleTimeString().substring(0,5));
-            chart.data.datasets[0].data = values.values;
+            let dates = values.map(value => (new Date(value.timestamp)).toLocaleTimeString().substring(0,5));
+            chart.data.datasets[0].data = values.map(value => value.value);
             chart.data.labels = dates;
             chart.update();
         }
@@ -97,13 +97,13 @@ function getDataGraph(offset, date1, date2) {
 function getCurrentDate(offset) {
     let date = new Date(new Date().getTime());
     date.setMinutes(date.getMinutes() - offset);
-    return date.getTime();
+    return date.toISOString();
 }
 
 
 function getDataCurrent() {
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/" + id + "?date2=" + getCurrentDate(10) + "&limit=1" , true);
+    ajax.open("GET", "/sensors/" + id + "/entry?date2=" + getCurrentDate(10) + "&limit=1" , true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {

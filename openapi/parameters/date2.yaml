@@ -3,5 +3,6 @@ in: query
 required: false
 description: The end date (timestamp) for filtering entries
 schema:
-  type: integer
-  format: int64
+  type: string
+  format: date-time
+

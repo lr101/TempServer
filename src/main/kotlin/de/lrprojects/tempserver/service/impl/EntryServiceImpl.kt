@@ -3,12 +3,17 @@ package de.lrprojects.tempserver.service.impl
 import com.influxdb.client.InfluxDBClient
 import com.influxdb.client.domain.WritePrecision
 import com.influxdb.client.write.Point
+import com.influxdb.exceptions.BadRequestException
 import de.lrprojects.tempserver.config.InfluxProperties
 import de.lrprojects.tempserver.entity.Entry
 import de.lrprojects.tempserver.service.api.EntryService
+import org.jetbrains.kotlin.preloading.ProfilingInstrumenterExample.e
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 
 @Service
@@ -17,32 +22,30 @@ class EntryServiceImpl(
     private val influxProperties: InfluxProperties
 ): EntryService {
 
-    override fun getEntries(sensorId: String, date1: Long?, date2: Long?, limit: Int?): List<Entry> {
-        val query = StringBuilder("from(bucket: \"${influxProperties.bucket}\") |> range(start: -1h)")
-        query.append(" |> filter(fn: (r) => r.sensorId == \"$sensorId\")")
-
-        if (date1 != null) {
-            query.append(" |> filter(fn: (r) => r._time >= ${formatTimestamp(date1)})")
-        }
-        if (date2 != null) {
-            query.append(" |> filter(fn: (r) => r._time <= ${formatTimestamp(date2)})")
-        }
-        if (limit != null) {
-            query.append(" |> limit(n: $limit)")
+    override fun getEntries(sensorId: String, date1: OffsetDateTime?, date2: OffsetDateTime?, limit: Int?, interval: Int?): List<Entry> {
+        val startDate = date1?.toString() ?: "0"
+        val stopDate = date2?.toString() ?: "now()"
+        val query = if (limit != null) {
+            getLimit(influxProperties.bucket, sensorId, startDate, stopDate, limit)
+        } else if (interval != null) {
+            aggregatedMean(influxProperties.bucket, sensorId, startDate, stopDate, interval)
+        } else {
+            getEntries(influxProperties.bucket, sensorId, startDate, stopDate)
         }
 
-        val fluxQuery = query.toString()
         val queryApi = influxDBClient.queryApi
-        val tables = queryApi.query(fluxQuery)
-
-        return tables.flatMap { table ->
-            table.records.map {
-                Entry(
-                    timestamp = it.time?.toEpochMilli()?.let { it1 -> Timestamp(it1) },
-                    value = it.value as Double,
-                    sensorId = sensorId
-                )
+        try {
+            val tables = queryApi.query(query)
+            return tables.flatMap { table ->
+                table.records.map {
+                    Entry(
+                        timestamp = it.time?.toEpochMilli()?.let { it1 -> Timestamp(it1) },
+                        value = it.value as Double,
+                    )
+                }
             }
+        } catch (e: BadRequestException) {
+            return emptyList()
         }
     }
 
@@ -55,9 +58,9 @@ class EntryServiceImpl(
         influxDBClient.writeApiBlocking.writePoint(point)
     }
 
-        override fun deleteEntries(sensorId: String, date1: Long?, date2: Long?) {
-        val startDate = date1?.let { formatTimestamp(it) } ?: "0"
-        val stopDate = date2?.let { formatTimestamp(it) } ?: "now()"
+        override fun deleteEntries(sensorId: String, date1: OffsetDateTime?, date2: OffsetDateTime?) {
+        val startDate = date1?.toString()?: "0"
+        val stopDate = date2?.toString() ?: "now()"
 
         val deleteQuery = """
             from(bucket: "${influxProperties.bucket}")
@@ -69,7 +72,27 @@ class EntryServiceImpl(
         influxDBClient.queryApi.query(deleteQuery)
     }
 
-    private fun formatTimestamp(epochMillis: Long): String {
-        return DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochMilli(epochMillis))
+    companion object {
+        fun aggregatedMean(bucket: String, sensorId: String, date1: String, date2: String, interval: Int) = """
+            from(bucket: "$bucket")
+                |> range(start: $date1, stop: $date2)
+                |> filter(fn: (r) => r["sensorId"] == "$sensorId")
+                |> group(columns: ["sensorId", "_field"])
+                |> aggregateWindow(every: $interval, fn: mean, createEmpty: false)
+                |> yield(name: "mean")
+        """
+        fun getEntries(bucket: String, sensorId: String, date1: String, date2: String) = """
+            from(bucket: "$bucket")
+                |> range(start: $date1, stop: $date2)
+                |> filter(fn: (r) => r["sensorId"] == "$sensorId")
+            """
+
+        fun getLimit(bucket: String, sensorId: String, date1: String, date2: String, limit: Int) = """
+            from(bucket: "$bucket")
+                |> range(start: $date1, stop: $date2)
+                |> filter(fn: (r) => r["sensorId"] == "$sensorId")
+                |> limit(n: $limit)
+            """
+
     }
 }

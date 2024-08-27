@@ -23,9 +23,9 @@ class ViewController(
     }
 
     @GetMapping(DISPLAY)
-    fun display(@RequestParam sensor_id: String, model: Model): String {
+    fun display(@RequestParam("sensor_id") sensorId: String, model: Model): String {
         val sensors = sensorService.getAllSensors()
-        val sensor = sensorService.getSensorById(sensor_id)
+        val sensor = sensorService.getSensorById(sensorId)
         model.addAttribute("sensors", sensors)
         model.addAttribute("thisSensor", sensor)
         return "display"
