@@ -39,3 +39,4 @@ build/
 /bw-cloud/
 /update.sh
 /.env
+/influx/
