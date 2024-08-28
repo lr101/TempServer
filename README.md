@@ -1,6 +1,11 @@
 # TempServer
 
-## Setup
+This services allows saving, configuring and displaying of sensor values. The sensor type, name and its categories are saved in a postgresdb,
+the values of the different sensors are saved inside a influxdb.
+
+The website uses plain html, css and javascript and can be accessed on port 8080. 
+
+## Prod Setup
 
 This service is run via docker:
 
@@ -20,6 +25,8 @@ This service is run via docker:
    ```shell
    docker compose up -d
    ```
+
+## Dev 
 
 Ardiono IDE ESP8266 Library: http://arduino.esp8266.com/stable/package_esp8266com_index.json
 

@@ -4,6 +4,7 @@ COPY pom.xml /tmp/pom.xml
 WORKDIR /tmp
 RUN mvn -B -f /tmp/pom.xml dependency:resolve
 COPY src /tmp/src
+COPY openapi /tmp/openapi
 RUN mvn clean install
 
 #Run
