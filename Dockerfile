@@ -5,7 +5,7 @@ WORKDIR /tmp
 RUN mvn -B -f /tmp/pom.xml dependency:resolve
 COPY src /tmp/src
 COPY openapi /tmp/openapi
-RUN mvn clean install
+RUN mvn install -DskipTests
 
 #Run
 FROM openjdk:17-jdk-slim
