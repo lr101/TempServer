@@ -1,68 +1,26 @@
-Setting up environmental variables: \
-Intelij: Run -> Edit Configurations... -> Environment Variables
-```
-DB_USER=[user];DB_PASSWORD=[password]
-```
-Using a database via ssh-tunnel:
-```
-DB_USER=postgres;DB_PASSWORD=root;SSH_Key=[keyContent];...//TODO
-```
+# TempServer
 
-Port forwarding: 
-```
-sudo apt-get install iptables
-sudo nano /etc/rc.local
-```
-And add this line before exit 0
-```
-iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
-```
-Service starten mit:
-```
-sudo systemctl start rc.local
-```
+## Setup
 
+This service is run via docker:
 
-Service erstellt in: 
-```
-sudo nano /etc/systemd/system/server.service 
-```
-```
-[Unit]
-Description=Spring Server for sensors
-After=network.target
-StartLimitIntervalSec=0
-
-[Service]
-Restart=always
-RestartSec=20
-User=pi
-Environment=DB_USER=[user] #TODO
-Environment=DB_PASSWORD=[psw] #TODO
-Environment=DATASOURCE_URL=jdbc:postgresql://127.0.0.1:5432/postgres
-ExecStart=java -jar $PWD/SpringServer-1.jar
-
-[Install]
-WantedBy=multi-user.target
-```
-Service starten mit:
-```
-sudo systemctl start server.service
-```
-Service fÃ¼r nach boot autostart:
-```
-sudo systemctl enable server
-```
-Einstellungen speichern mit:
-```
- sudo systemctl daemon-reload
-```
+1. Create `.env` file in a folder:
+    ```
+    POSTGRES_USER=<db_user>
+    POSTGRES_PASSWORD=<db_password>
+    DB_URL=jdbc:postgresql://db:5432/tempserver
+    INFLUXDB_URL=http://indluxdb:8086
+    INFLUXDB_TOKEN=<influx_token>
+    INFLUXDB_BUCKET=tempserver
+    INFLUXDB_ORG=<org>
+   ```
+   Fill in your own values for connecting to existing postgresdb or influxdb instances. Create your own influxdb token via the influx ui.
+2. Copy the `docker-compose.yml` file into the same folder
+3. Run the docker compose file (remove db or influxdb services if not needed):
+   ```shell
+   docker compose up -d
+   ```
 
 Ardiono IDE ESP8266 Library: http://arduino.esp8266.com/stable/package_esp8266com_index.json
 
 Tile CSS: https://1linelayouts.glitch.me/
-
-sudo nano /var/log/postgresql/postgresql-13-main.log - to see postgres logs
-
-postgres login unix:  sudo su - postgres
--> Probleme in "/pg_hba.conf" der Datenbank müssen Loginmethoden für die Lokale Benutzung verändert werden.

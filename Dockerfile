@@ -9,6 +9,6 @@ RUN mvn clean install
 #Run
 FROM openjdk:17-jdk-slim
 WORKDIR /app
-COPY --from=build /tmp/target/*jar /app/app.jar
+COPY --from=builder /tmp/target/*jar /app/app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]

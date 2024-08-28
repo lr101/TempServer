@@ -1,7 +1,7 @@
 services:
   temp-server:
     container_name: temp-server
-    build: .
+    image: lr.dev.projects/temp-server:latest
     restart: unless-stopped
     ports:
       - 8081:8081
