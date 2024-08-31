@@ -8,6 +8,7 @@ import de.lrprojects.tempserver.config.InfluxProperties
 import de.lrprojects.tempserver.entity.Entry
 import de.lrprojects.tempserver.service.api.EntryService
 import org.jetbrains.kotlin.preloading.ProfilingInstrumenterExample.e
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.sql.Timestamp
 import java.time.Instant
@@ -35,11 +36,12 @@ class EntryServiceImpl(
 
         val queryApi = influxDBClient.queryApi
         try {
+            log.info("Run getEntries query: $query")
             val tables = queryApi.query(query)
             return tables.flatMap { table ->
                 table.records.map {
                     Entry(
-                        timestamp = it.time?.toEpochMilli()?.let { it1 -> Timestamp(it1) },
+                        timestamp = OffsetDateTime.ofInstant(it.time, ZoneOffset.UTC),
                         value = it.value as Double,
                     )
                 }
@@ -53,12 +55,12 @@ class EntryServiceImpl(
         val point = Point.measurement("entry")
             .addTag("sensorId", sensorId)
             .addField("value", entry.value)
-            .time(entry.timestamp?.toInstant(), WritePrecision.NS)
+            .time(entry.timestamp?.toInstant(), WritePrecision.S)
 
         influxDBClient.writeApiBlocking.writePoint(point)
     }
 
-        override fun deleteEntries(sensorId: String, date1: OffsetDateTime?, date2: OffsetDateTime?) {
+    override fun deleteEntries(sensorId: String, date1: OffsetDateTime?, date2: OffsetDateTime?) {
         val startDate = date1?.toString()?: "0"
         val stopDate = date2?.toString() ?: "now()"
 
@@ -93,6 +95,6 @@ class EntryServiceImpl(
                 |> filter(fn: (r) => r["sensorId"] == "$sensorId")
                 |> limit(n: $limit)
             """
-
+        private val log = LoggerFactory.getLogger(this::class.java)
     }
 }

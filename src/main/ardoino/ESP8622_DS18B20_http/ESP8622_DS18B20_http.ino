@@ -5,9 +5,15 @@
 #include <DallasTemperature.h>
 #include <Arduino_JSON.h>
 #include <WiFiClientSecure.h>
+#include <WiFiUdp.h>
 #include "config.h"
 //Define GPIO pin D2 as Data-pin
 #define ONE_WIRE_BUS 4
+
+// define time libary
+#define NTP_OFFSET   0      // In seconds
+#define DAYLIGHT_OFFSET 0    // In miliseconds
+#define NTP_ADDRESS  "europe.pool.ntp.org"
 
 String convertSensorID(DeviceAddress);
 
@@ -19,7 +25,7 @@ struct sensorStruct {
     float* curValue;
 };
 
-int avgSleepTime;
+int avgSleepTime = 200;
 
 // Setup a oneWire instance to communicate with any OneWire devices 
 OneWire oneWire(ONE_WIRE_BUS);
@@ -63,7 +69,14 @@ void setup() {
   Serial.print("http://");
   Serial.print(WiFi.localIP());
   Serial.println("/");
-       
+  
+  // start time client
+  configTime(NTP_OFFSET, DAYLIGHT_OFFSET, NTP_ADDRESS);    
+  while (!time(nullptr)) {
+    Serial.println("Waiting for time");
+    delay(1000);
+  } 
+  
   /*
    * Setup Thermometers
    * Send Thermometer serial number to server to setup db
@@ -89,29 +102,31 @@ void setup() {
        HTTPClient http;
       
       //Connect to WebServer:
-      if(http.begin(client, ("http://" + host + "/sensors/id/").c_str())){
+      if(http.begin(client, ("http://" + host + "/rest/v1/sensors").c_str())){
         // we are connected to the host!
         http.addHeader("Content-Type", "application/json");
         Serial.println(sensor_id);//Send the request
-        String json = "{\"sensorId\":\"" + sensor_id + "\",\"sensorNick\":\"newSensor\" ,\"id\": -1,\"sensorType\": {"
-        + "\"id\": 0, \"sensorType\": \"Default\", \"unit\": \"dUnit\", \"repetitions\": 10,\"sleepTime\": 10"
-        + "}}";
-        int httpCode = http.POST(json);    
+        String json = "{\"sensorId\":\"" + sensor_id + "\",\"sensorNick\":\"newSensor\",\"sensorType\": \"Thermometer\"}";
+        int httpCode = http.POST(json);
+        infos[i].repetitions = 10;
+        infos[i].sensor_id = sensor_id;
+        infos[i].values = new float[10];
+        infos[i].curValue = infos[i].values;    
         
         if (httpCode > 0) { //Check the returning code
            http.end();
            //get Information of Sensor
-           http.begin(client, ("http://" + host + "/sensors/id/" + sensor_id).c_str());
-           int httpCode = http.GET();
-           if (httpCode == HTTP_CODE_OK) {
-              JSONVar myObject = JSON.parse(http.getString());
-              infos[i].repetitions = (int) myObject["sensorType"]["repetitions"];
-              avgSleepTime += (int) myObject["sensorType"]["sleepTime"];
-              infos[i].sensor_id = sensor_id;
-              infos[i].values = new float[infos[i].repetitions];
-              infos[i].curValue = infos[i].values;
-            }
-            http.end();
+           //http.begin(client, ("http://" + host + "/sensors/id/" + sensor_id).c_str());
+           //int httpCode = http.GET();
+           //if (httpCode == HTTP_CODE_OK) {
+           //   JSONVar myObject = JSON.parse(http.getString());
+           //   infos[i].repetitions = (int) myObject["sensorType"]["repetitions"];
+           //   avgSleepTime += (int) myObject["sensorType"]["sleepTime"];
+           //   infos[i].sensor_id = sensor_id;
+           //   infos[i].values = new float[infos[i].repetitions];
+           //   infos[i].curValue = infos[i].values;
+           // }
+           // http.end();
          }
       } else {
         // connection failure
@@ -130,6 +145,7 @@ void loop() {
    * Read Temperatur:
    **/
   sensors.requestTemperatures(); // Send the command to get temperatures
+  
   
   // Loop through each device, print out temperature data
   for(int i=0;i<numberOfDevices; i++){
@@ -150,10 +166,10 @@ void loop() {
         HTTPClient http;
       
         //Connect to WebServer:
-        if (http.begin(client,"http://" + host + "/sensors/post/" + infos[i].sensor_id + "/")){
+        if (http.begin(client,"http://" + host + "/rest/v1/sensors/" + infos[i].sensor_id +  "/entry")){
           // we are connected to the host!
           http.addHeader("Content-Type", "application/json");
-          String json = "{\"row_id\":0 ,\"entryValue\":\"" + (String)getAvg(infos[i].values, infos[i].repetitions) + "\",\"date\": null }";
+          String json = "{\"value\":\"" + (String)getAvg(infos[i].values, infos[i].repetitions) + "\",\"timestamp\": \"" +  getISOTime() +"\" }";
           Serial.println(json);
           int httpCode = http.POST(json);                                  //Send the request
         } else {
@@ -226,4 +242,16 @@ String decToHexa(int n)
         hex += hexaDeciNum[j];
 
     return hex;
+}
+
+String getISOTime() {
+  time_t now;
+  struct tm timeinfo;
+  char buffer[25];
+
+  time(&now);
+  gmtime_r(&now, &timeinfo); // Convert to UTC time
+  strftime(buffer, sizeof(buffer), "%Y-%m-%dT%H:%M:%SZ", &timeinfo);
+
+  return String(buffer);
 }

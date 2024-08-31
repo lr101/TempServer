@@ -1,37 +1,16 @@
 services:
   temp-server:
-    container_name: temp-server
-    image: lr.dev.projects/temp-server:latest
+    image: lrprojects/tempserver:1.0.0-SNAPSHOT
     restart: unless-stopped
     ports:
-      - 8081:8081
+      - 8080:8080
     env_file:
       -  .env
-    environment:
-      DB_HOST: db
-      EMAIL: lr.dev.projects@gmail.com
-
-      # ---- Edit to change default: ----
-      # PORT: 8081
-
-      # ---- From .env file: -------
-      # POSTGRES_PASSWORD
-      # POSTGRES_USER
-      # POSTGRES_DB
-      # EMAIL_PASSWORD
-      # SECRET
-    depends_on:
-      - db
-      - influxdb
-
-  db:
-    image: postgres:16
-    restart: unless-stopped
-    container_name: stick-it-db
-    ports:
-      - 5433:5432
-    volumes:
-      - ./postgres-data:/var/lib/postgresql/data
-      - ./backup:/backup
-    env_file:
-      - .env
+    networks:
+      - influxdb-network
+      - postgresql-network
+networks:
+  influxdb-network:
+    external: true
+  postgresql-network:
+    external: true

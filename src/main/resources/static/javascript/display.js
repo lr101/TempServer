@@ -112,7 +112,7 @@ function getDataCurrent() {
                 document.getElementById("current").innerHTML = "No Data available";
             } else {
                 let unit = document.getElementById("current").getAttribute("data-unit");
-                document.getElementById("current").innerHTML = "Current Value: " + list[list.length - 1].entryValue + unit;
+                document.getElementById("current").innerHTML = "Current Value: " + list[list.length - 1].value + unit;
             }
         }
     };

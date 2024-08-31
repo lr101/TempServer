@@ -13,5 +13,5 @@ fun Entry.toDto() = EntryDto().also {
 
 fun EntryDto.toEntity() = Entry().also {
     it.value = this.value
-    it.timestamp = Timestamp.from(this.timestamp.toInstant())
+    it.timestamp = this.timestamp
 }

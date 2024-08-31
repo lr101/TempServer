@@ -1,8 +1,8 @@
 package de.lrprojects.tempserver.entity
 
-import java.sql.Timestamp
+import java.time.OffsetDateTime
 
 data class Entry(
-    var timestamp: Timestamp? = null,
+    var timestamp: OffsetDateTime? = null,
     var value: Double? = null,
 )
