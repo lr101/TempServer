@@ -103,7 +103,7 @@ function getCurrentDate(offset) {
 
 function getDataCurrent() {
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/" + id + "/entry?date2=" + getCurrentDate(10) + "&limit=1" , true);
+    ajax.open("GET", "/rest/v1/sensors/" + id + "/entry?date2=" + getCurrentDate(10) + "&limit=1" , true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {

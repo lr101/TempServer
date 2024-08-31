@@ -26,8 +26,13 @@ This service is run via docker:
    docker compose up -d
    ```
 
-## Dev 
+## Arduino
 
-Ardiono IDE ESP8266 Library: http://arduino.esp8266.com/stable/package_esp8266com_index.json
-
-Tile CSS: https://1linelayouts.glitch.me/
+1. Driver installation **(specifically for ESP8266 by AZ-Delivery)**: https://www.arduined.eu/ch340-windows-10-driver-download/ 
+2. Connect your Arduino
+3. Add Device Library under *preferences -> Additional Boards managt by URLs*: http://arduino.esp8266.com/stable/package_esp8266com_index.json
+4. Select the Board under: *Board -> esp8266 -> NodeMCU 1.0 (ESP-12E Module)*
+5. Select your COM-Port (should show up when installed the driver correctly and a usb cable capable of transferring data is used)
+6. Install dependencies (look at the *#includes* and search for them)
+7. Rename the `config_template.h` file to `config.h` and fill in your WiFi information
+8. Upload and test

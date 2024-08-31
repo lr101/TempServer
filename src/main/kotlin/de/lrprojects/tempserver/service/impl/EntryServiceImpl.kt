@@ -7,15 +7,10 @@ import com.influxdb.exceptions.BadRequestException
 import de.lrprojects.tempserver.config.InfluxProperties
 import de.lrprojects.tempserver.entity.Entry
 import de.lrprojects.tempserver.service.api.EntryService
-import org.jetbrains.kotlin.preloading.ProfilingInstrumenterExample.e
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
-import java.sql.Timestamp
-import java.time.Instant
-import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 @Service
 class EntryServiceImpl(
@@ -24,14 +19,14 @@ class EntryServiceImpl(
 ): EntryService {
 
     override fun getEntries(sensorId: String, date1: OffsetDateTime?, date2: OffsetDateTime?, limit: Int?, interval: Int?): List<Entry> {
-        val startDate = date1?.toString() ?: "0"
-        val stopDate = date2?.toString() ?: "now()"
+        val toDate = date1?.toString() ?: "now()"
+        val fromDate = date2?.toString() ?:  "0"
         val query = if (limit != null) {
-            getLimit(influxProperties.bucket, sensorId, startDate, stopDate, limit)
+            getLimit(influxProperties.bucket, sensorId, toDate, fromDate, limit)
         } else if (interval != null) {
-            aggregatedMean(influxProperties.bucket, sensorId, startDate, stopDate, interval)
+            aggregatedMean(influxProperties.bucket, sensorId, toDate, fromDate, interval)
         } else {
-            getEntries(influxProperties.bucket, sensorId, startDate, stopDate)
+            getEntries(influxProperties.bucket, sensorId, toDate, fromDate)
         }
 
         val queryApi = influxDBClient.queryApi
@@ -75,23 +70,23 @@ class EntryServiceImpl(
     }
 
     companion object {
-        fun aggregatedMean(bucket: String, sensorId: String, date1: String, date2: String, interval: Int) = """
+        fun aggregatedMean(bucket: String, sensorId: String, toDate: String, fromDate: String, interval: Int) = """
             from(bucket: "$bucket")
-                |> range(start: $date1, stop: $date2)
+                |> range(start: $fromDate, stop: $toDate)
                 |> filter(fn: (r) => r["sensorId"] == "$sensorId")
                 |> group(columns: ["sensorId", "_field"])
                 |> aggregateWindow(every: $interval, fn: mean, createEmpty: false)
                 |> yield(name: "mean")
         """
-        fun getEntries(bucket: String, sensorId: String, date1: String, date2: String) = """
+        fun getEntries(bucket: String, sensorId: String, toDate: String, fromDate: String) = """
             from(bucket: "$bucket")
-                |> range(start: $date1, stop: $date2)
+                |> range(start: $fromDate, stop: $toDate)
                 |> filter(fn: (r) => r["sensorId"] == "$sensorId")
             """
 
-        fun getLimit(bucket: String, sensorId: String, date1: String, date2: String, limit: Int) = """
+        fun getLimit(bucket: String, sensorId: String, toDate: String, fromDate: String, limit: Int) = """
             from(bucket: "$bucket")
-                |> range(start: $date1, stop: $date2)
+                |> range(start: $fromDate, stop: $toDate)
                 |> filter(fn: (r) => r["sensorId"] == "$sensorId")
                 |> limit(n: $limit)
             """
