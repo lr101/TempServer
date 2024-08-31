@@ -4,7 +4,7 @@ get:
   tags:
     - Sensor Types
   parameters:
-    - $ref: '../parameters/id.yaml'
+    - $ref: '../parameters/typeId.yaml'
   responses:
     '200':
       description: The sensor type with the specified ID
@@ -37,7 +37,7 @@ delete:
   tags:
     - Sensor Types
   parameters:
-    - $ref: '../parameters/sensorTypeId.yaml'
+    - $ref: '../parameters/typeId.yaml'
   responses:
     '204':
       description: No content, sensor type deleted successfully

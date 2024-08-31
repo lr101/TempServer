@@ -33,7 +33,7 @@ class SensorDelegate(
         return ResponseEntity(sensorService.createSensor(sensorDto.toEntity(typeService)).toDto(), HttpStatus.CREATED)
     }
 
-    override fun putSensor(sensorDto: SensorDto): ResponseEntity<SensorDto> {
-        return ResponseEntity.ok(sensorService.updateSensor(sensorDto.toEntity(typeService)).toDto())
+    override fun putSensor(sensorId: String, sensorDto: SensorDto): ResponseEntity<SensorDto>? {
+        return ResponseEntity.ok(sensorService.updateSensor(sensorDto, sensorId).toDto())
     }
 }

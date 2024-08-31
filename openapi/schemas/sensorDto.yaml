@@ -11,3 +11,9 @@ properties:
     type: string
     nullable: true
     description: The nickname of the sensor
+  categories:
+    type: array
+    nullable: true
+    description: The categories of the sensor
+    items:
+      $ref: 'categoryDto.yaml'

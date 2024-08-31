@@ -1,7 +1,0 @@
-name: id
-in: path
-required: true
-description: The ID of the sensor type
-schema:
-  type: integer
-  format: int64

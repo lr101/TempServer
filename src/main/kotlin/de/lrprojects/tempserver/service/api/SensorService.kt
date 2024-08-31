@@ -1,6 +1,7 @@
 package de.lrprojects.tempserver.service.api
 
 import de.lrprojects.tempserver.entity.Sensor
+import de.lrprojects.tempserver.model.SensorDto
 
 interface SensorService {
     fun getAllSensors(): List<Sensor>
@@ -9,7 +10,7 @@ interface SensorService {
 
     fun createSensor(sensor: Sensor): Sensor
 
-    fun updateSensor(sensor: Sensor): Sensor
+    fun updateSensor(sensor: SensorDto, sensorId: String): Sensor
 
     fun deleteSensor(sensorId: String)
 }

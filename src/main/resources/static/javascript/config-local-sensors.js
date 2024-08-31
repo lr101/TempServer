@@ -5,7 +5,7 @@
 function dropdown(id) {
     if (id) {
         const ajax = new XMLHttpRequest();
-        ajax.open("GET", "/sensors/id/" + id, true);
+        ajax.open("GET", "/rest/v1/sensors/" + id, true);
         ajax.send(null);
         ajax.onreadystatechange = function () {
             if (ajax.readyState === 4) {
@@ -33,12 +33,15 @@ function changeSelectedIndexCategory(docId, sensorTypeOrCategory) {
 
 function changeSelectedIndex(docId, sensorTypeOrCategory) {
     let nodes = document.getElementById(docId).children;
-    for (let i = 0; i < nodes.length; i++) {
-        let value = nodes[i].getAttribute("value");
-        if (value && value.toString() === sensorTypeOrCategory.id.toString()) {
-            document.getElementById(docId).selectedIndex = i.toString();
+    if (sensorTypeOrCategory) {
+        for (let i = 0; i < nodes.length; i++) {
+            let value = nodes[i].getAttribute("value");
+            if (value && value.toString() === sensorTypeOrCategory.id.toString()) {
+                document.getElementById(docId).selectedIndex = i.toString();
+            }
         }
     }
+
     $('#'+docId).trigger('change');
 }
 
@@ -48,9 +51,9 @@ function insertIndex(docId, values) {
         let node = document.createElement("option");
         node.setAttribute("value", values[i].id);
         if (docId === "selectType") {
-            node.innerHTML = values[i].sensorType;
+            node.innerHTML = values[i].typeName;
         } else {
-            node.innerHTML = values[i].sensorCategory;
+            node.innerHTML = values[i].name;
         }
         select.appendChild(node);
     }
@@ -59,7 +62,7 @@ function insertIndex(docId, values) {
 
 function updateSensorTypes() {
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/types/", true);
+    ajax.open("GET", "/rest/v1/types", true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {
@@ -71,7 +74,7 @@ function updateSensorTypes() {
 
 function updateSensorCategories() {
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/categories/", true);
+    ajax.open("GET", "/rest/v1/categories", true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {
@@ -91,11 +94,11 @@ function submitData() {
     const sensor_nick = document.getElementById("nickname").value;
     if (sensor_nick.length > 0 && sensor_nick.length < 17 && sensor_type_id !== "" && sensor_id !== "") {
         const ajax = new XMLHttpRequest();
-        ajax.open("GET", "/sensors/types/" + sensor_type_id, true);
+        ajax.open("GET", "/rest/v1/types/" + sensor_type_id, true);
         ajax.send(null);
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4) {
-                let sensorType = JSON.parse(ajax.responseText);
+                let sensorType = JSON.parse(ajax.responseText).typeName;
                 let categories = $(category).find("option:selected");
                 let sensorCategory = [];
                 for (let i = 0; i < categories.length; i++) {
@@ -104,9 +107,9 @@ function submitData() {
                     option["sensorCategory"] = $(categories[i]).text();
                     sensorCategory.push(option);
                 }
-                ajax.open("PUT", "/sensors/id/", true);
+                ajax.open("PUT", "/rest/v1/sensors/" + sensor_id, true);
                 ajax.setRequestHeader("Content-Type", "application/json");
-                let json = {id: 0, sensorId: sensor_id, sensorNick: sensor_nick, sensorType: sensorType, categories:sensorCategory}
+                let json = {sensorNick: sensor_nick, sensorType: sensorType, categories:sensorCategory}
                 ajax.send(JSON.stringify(json));
                 ajax.onreadystatechange = function () {
                     if (ajax.readyState === 4) {
@@ -129,7 +132,7 @@ function checkActive(id) {
     date.setMinutes(date.getMinutes() - 10);
     date = date.toISOString();
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/" + id + "?date2=" + date + "&limit=1" , true);
+    ajax.open("GET", "/rest/v1/sensors/" + id + "/entry?date2=" + date + "&limit=1" , true);
     ajax.send(null);
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {
@@ -141,7 +144,7 @@ function checkActive(id) {
                 document.getElementById("active_content").style.backgroundColor = "rgba(223,26,56,1)";
             } else {
                 document.getElementById("active").innerHTML = "ACTIVE";
-                document.getElementById("temp").innerHTML = "current: " + list[list.length - 1].entryValue;
+                document.getElementById("temp").innerHTML = "current: " + list[list.length - 1].value;
                 document.getElementById("active_content").style.backgroundColor = "#35fb74";
             }
         }
@@ -156,7 +159,7 @@ document.getElementById("delete").addEventListener("click", function () {
     const id = document.getElementById("id").value;
     if (id !== "") {
         const ajax = new XMLHttpRequest();
-        ajax.open("DELETE", "/sensors/id/" + id, true);
+        ajax.open("DELETE", "/rest/v1/sensors/" + id, true);
         ajax.send(null);
         ajax.onreadystatechange = function () {
             if (ajax.readyState === 4) {
@@ -197,7 +200,7 @@ function alterTempData (method) {
         date2.setMinutes(date2.getMinutes());
         if (date1 > date2) {
             const ajax = new XMLHttpRequest();
-            ajax.open(method, "/sensors/" + (method === "DELETE" ? "delete/": "")  + id + "?date1=" + date1.toISOString() + "&date2=" + date2.toISOString(), true);
+            ajax.open(method, "/rest/v1/sensors/" + id + "/entry?date1=" + date1.toISOString() + "&date2=" + date2.toISOString(), true);
             ajax.setRequestHeader("Content-Type", "text/html");
             ajax.send(null);
             ajax.onreadystatechange = function () {

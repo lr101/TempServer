@@ -26,8 +26,8 @@
           <ul>
             <li th:each="sensor: ${sensors}">
               <form action="/display" method="get" >
-                <input hidden name="sensor_id" th:value="${sensor.getSensorId()}">
-                <input class="menu-content" th:id="'dropdown_' + ${sensor.getSensorId()}" type="submit" th:value="${sensor.sensorNick}">
+                <input hidden name="sensor_id" th:value="${sensor.getId()}">
+                <input class="menu-content" th:id="'dropdown_' + ${sensor.getId()}" type="submit" th:value="${sensor.getSensorNick()}">
               </form>
             </li>
           </ul>
@@ -43,11 +43,6 @@
             <li>
               <form action="/config/local-sensors" method="get">
                 <input  class="menu-content" type="submit"  value="Edit Sensors">
-              </form>
-            </li>
-            <li>
-              <form action="/config/sensor-types" method="get">
-                <input class="menu-content" type="submit" value="Edit Types">
               </form>
             </li>
             <li>
@@ -82,7 +77,7 @@
       <div class="content p-2">
         <h2>Selection</h2>
         <div class="list-group" id="list">
-          <button th:each="category : ${categories}" th:id="'list_' + ${category.getId()}" type="button" data-toggle="list" th:attr="onclick=|select('${category.getSensorCategory()}', '${category.getId()}')|" class="list-group-item list-group-item-action" th:text="${category.getSensorCategory()}"></button>
+          <button th:each="category : ${categories}" th:id="'list_' + ${category.getId()}" type="button" data-toggle="list" th:attr="onclick=|select('${category.getName()}', '${category.getId()}')|" class="list-group-item list-group-item-action" th:text="${category.getName()}"></button>
           <button id="list_new"  type="button" data-toggle="list" onclick="select('', '')" class="list-group-item list-group-item-action active">+</button>
         </div>
       </div>

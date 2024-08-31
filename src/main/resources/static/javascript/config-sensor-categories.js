@@ -16,18 +16,18 @@ function submitData() {
 
     let json;
     if (sensor_category_id !== "" ) {
-        ajax.open("PUT", "/sensors/categories/", true);
-        json = {sensorCategory : sensor_category, id :sensor_category_id}
+        ajax.open("PUT", "/rest/v1/categories/", true);
+        json = {name : sensor_category, id :sensor_category_id, description: "A new category"}
     } else if (sensor_category_id === "") {
-        ajax.open("POST", "/sensors/categories/", true);
-        json = {sensorCategory : sensor_category, id: 0}
+        ajax.open("POST", "/rest/v1/categories", true);
+        json = {name : sensor_category, description: "A new category"}
     }
     if (json !== undefined && sensor_category.length > 0) {
         ajax.setRequestHeader("Content-Type", "application/json");
         ajax.send(JSON.stringify(json));
         ajax.onreadystatechange = function () {
             if (ajax.readyState === 4) {
-                if (ajax.status === 200) {
+                if (ajax.status === 200 || ajax.status === 201) {
                     updateCategories();
 
                 } else {
@@ -40,7 +40,7 @@ function submitData() {
 
 function updateCategories() {
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", "/sensors/categories/", true);
+    ajax.open("GET", "/rest/v1/categories", true);
     ajax.send();
     ajax.onreadystatechange = function() {
         if (ajax.readyState === 4) {
@@ -52,11 +52,11 @@ function updateCategories() {
                     let btn = document.createElement("button");
                     btn.classList.add('list-group-item','list-group-item-action');
                     if (i === data.length) btn.classList.add('active');
-                    btn.id = "list_" + (i === data.length ? "new" : data[i].sensor_category_id);
+                    btn.id = "list_" + (i === data.length ? "new" : data[i].id);
                     btn.setAttribute("category", "button");
                     btn.setAttribute("data-toggle", "list");
-                    btn.setAttribute("onclick", (i === data.length ? "select('','')" : "select('" + data[i].sensorCategory + "','" + data[i].id + "')"));
-                    btn.innerHTML = (i === data.length ? "+" : data[i].sensorCategory);
+                    btn.setAttribute("onclick", (i === data.length ? "select('','')" : "select('" + data[i].name + "','" + data[i].id + "')"));
+                    btn.innerHTML = (i === data.length ? "+" : data[i].name);
                     listElement.appendChild(btn);
                 }
                 document.getElementById("categoryName").value = "";
@@ -75,7 +75,7 @@ document.getElementById("submit").addEventListener("click", function () {
 document.getElementById("delete").addEventListener("click", function () {
     const sensor_category_id = document.getElementById("categoryName").getAttribute("data-id");
     const ajax = new XMLHttpRequest();
-    ajax.open("DELETE", "/sensors/categories/" + sensor_category_id, true);
+    ajax.open("DELETE", "/rest/v1/categories" + sensor_category_id, true);
     ajax.send();
     ajax.onreadystatechange = function () {
         if (ajax.readyState === 4) {

@@ -38,15 +38,6 @@ class ViewController(
         return "config-local-sensors"
     }
 
-    @GetMapping(CONFIG_SENSOR_TYPES)
-    fun configSensorTypes(model: Model): String {
-        val types = typeService.getAllTypes()
-        val sensors = sensorService.getAllSensors()
-        model.addAttribute("types", types)
-        model.addAttribute("sensors", sensors)
-        return "config-sensor-types"
-    }
-
     @GetMapping(CONFIG_SENSOR_CATEGORIES)
     fun configSensorCategories(model: Model): String {
         val categories = categoryService.getAllCategories()
