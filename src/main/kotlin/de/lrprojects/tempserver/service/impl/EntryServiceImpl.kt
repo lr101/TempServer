@@ -56,12 +56,12 @@ class EntryServiceImpl(
     }
 
     override fun deleteEntries(sensorId: String, date1: OffsetDateTime?, date2: OffsetDateTime?) {
-        val startDate = date1?.toString()?: "0"
-        val stopDate = date2?.toString() ?: "now()"
+        val toDate = date1?.toString()?:  "now()"
+        val fromDate = date2?.toString() ?: "0"
 
         val deleteQuery = """
             from(bucket: "${influxProperties.bucket}")
-              |> range(start: $startDate, stop: $stopDate)
+              |> range(start: $fromDate, stop: $toDate)
               |> filter(fn: (r) => r.sensorId == "$sensorId")
               |> drop()
         """.trimIndent()
@@ -75,7 +75,7 @@ class EntryServiceImpl(
                 |> range(start: $fromDate, stop: $toDate)
                 |> filter(fn: (r) => r["sensorId"] == "$sensorId")
                 |> group(columns: ["sensorId", "_field"])
-                |> aggregateWindow(every: $interval, fn: mean, createEmpty: false)
+                |> aggregateWindow(every: ${interval}s, fn: mean, createEmpty: false)
                 |> yield(name: "mean")
         """
         fun getEntries(bucket: String, sensorId: String, toDate: String, fromDate: String) = """
