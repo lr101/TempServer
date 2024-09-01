@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <link rel='stylesheet' href='./stylesheets/bootstrap.css'>
-  <link rel='stylesheet' href='./stylesheets/template.css'>
-  <link rel='stylesheet' href='./stylesheets/display.css'>
-  <link rel='stylesheet' href="./stylesheets/zynep.css">
-  <title>Data Display</title>
+  <link rel='stylesheet' href='../stylesheets/config-sensor-types.css'>
+  <link rel='stylesheet' href='../stylesheets/bootstrap.css'>
+  <link rel='stylesheet' href='../stylesheets/template.css'>
+  <link rel='stylesheet' href="../stylesheets/zynep.css">
+  <title>Configuration</title>
 </head>
 <body>
 <header class="text-center">
+
   <div class="zeynep first" data-menu-name="first">
     <ul>
       <li>
@@ -62,9 +63,9 @@
 </header>
 <div class="main page-body">
   <div class="row header">
-    <h1 id="title" th:data-id="${thisSensor.getId()}" th:text="${thisSensor.getType() != null ? thisSensor.getType().getTypeName() : ''}"></h1>
+    <h1 id="title">Configure Types</h1>
   </div>
-  <main id="main">
+  <main id="main" th:data-length="${sensors.size()}" class="container-fluid">
     <div class="row">
       <nav class="navbar lightgrey">
         <div class="hamburger-container">
@@ -76,42 +77,37 @@
       </nav>
     </div>
 
-    <div class="row" >
-      <section class="col-12 displayRowContainer">
-        <h1 id="current" class="displayRow" th:data-unit="${thisSensor.getType() != null ? thisSensor.getType().getDescription() : 'Not set'}">Current Value: LOADING...</h1>
-      </section>
-    </div>
-    <div class="row">
-      <section class="col-12" id="chart">
-        <canvas id="myChart"></canvas>
-      </section>
-    </div>
-    <div class="row">
-      <section class="col-2" >
-        <button class="button buttonBig" onclick="getDataGraph(60);">1 hour</button>
-      </section>
-      <section class="col-2" >
-        <button class="button buttonBig" onclick="getDataGraph(720);">12 hour</button>
-      </section>
-      <section class="col-2" >
-        <button class="button buttonBig" onclick="getDataGraph(1440);">1 day</button>
-      </section>
-      <section class="col-2" >
-        <button class="button buttonBig" onclick="getDataGraph(2880);">2 day</button>
-      </section>
-      <section class="col-2" >
-        <button class=" button buttonBig" onclick="getDataGraph(4320);">3 days</button>
-      </section>
-      <section class="col-2" >
-        <button class="button buttonBig" onclick="getDataGraph(10080);">7 days</button>
-      </section>
-    </div>
-    <div class="row">
-      <section class="col-12 displayRowContainer">
-        <h1 class="displayRow" th:text="'Sensor Type: ' + ${thisSensor.getType() != null ? thisSensor.getType().getTypeName(): 'Not set'}"></h1>
-      </section>
-    </div>
-  </main>
+  <div class="row" id="sensor_config">
+    <section class="col-lg-2 config" id="config_left">
+      <div class="content p-2">
+        <h2>Selection</h2>
+        <div class="list-group" id="list">
+          <button th:each="type : ${types}" th:id="'list_' + ${type.getId()}" type="button" data-toggle="list" th:attr="onclick=|select('${type.getTypeName()}', '${type.getId()}', '${type.getDescription()}')|" class="list-group-item list-group-item-action" th:text="${type.getTypeName()}"></button>
+          <button id="list_new"  type="button" data-toggle="list" onclick="select('', '','')" class="list-group-item list-group-item-action active">+</button>
+        </div>
+      </div>
+    </section>
+    <section class="col-lg-10 config" id="config_middle">
+      <div class="content">
+        <h1 id="config_name">Sensor Type</h1>
+        <form id="form">
+          <label  class="form-label" for="typeName">Sensor Type:</label>
+          <div class="input-group mb-3">
+            <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeName" name="sensor_type" required>
+          </div>
+          <label  class="form-label" for="typeUnit">Sensor Unit:</label>
+          <div class="input-group mb-3">
+            <input data-id="" maxlength="16" minlength="1" autocomplete="off" class="form-control" type="text" id="typeUnit" name="sensor_type" required>
+          </div>
+          <div class="input-group mb-3">
+            <input data-target="#login_sub" data-toggle="modal"  id="submit" class="button login-trigger"  value="Submit">
+            <input data-target="#login_del" data-toggle="modal" id="delete" class="button login-trigger" value="Delete">
+          </div>
+        </form>
+      </div>
+    </section>
+  </div>
+</main>
   <footer>
     <h1>https://github.com/lr101/TempServer</h1>
   </footer>
@@ -119,10 +115,9 @@
 </div>
 
 
-
-<script src="./javascript/jquery-3.6.0.min.js"></script>
-<script src="./javascript/display.js"></script>
-<script src="./javascript/chart.js"></script>
-<script src="./javascript/zynep.js"></script>
+<script src="../javascript/jquery-3.6.0.min.js"></script>
+<script src="../javascript/bootstrap.bundle.js"></script>
+<script src="../javascript/config-sensor-types.js"></script>
+<script src="../javascript/zynep.js"></script>
 </body>
 </html>

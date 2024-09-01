@@ -47,6 +47,15 @@ class ViewController(
         return "config-sensor-categories"
     }
 
+    @GetMapping(CONFIG_SENSOR_TYPES)
+    fun configSensorTypes(model: Model): String {
+        val types = typeService.getAllTypes()
+        val sensors = sensorService.getAllSensors()
+        model.addAttribute("types", types)
+        model.addAttribute("sensors", sensors)
+        return "config-sensor-types"
+    }
+
     companion object {
         const val BASE = "/"
         const val DISPLAY = "/display"

@@ -40,3 +40,4 @@ build/
 /update.sh
 /.env
 /influx/
+/src/main/ardoino/ESP8622_DS18B20_http/.theia/launch.json
