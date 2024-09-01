@@ -1,9 +1,6 @@
 package de.lrprojects.tempserver.entity
 
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
+import jakarta.persistence.*
 
 @Entity
 data class Sensor(
@@ -11,7 +8,11 @@ data class Sensor(
     var id: String? = null,
     @ManyToOne
     var type: Type? = null,
-    @OneToMany
+    @ManyToMany
+    @JoinTable(
+        name = "sensor_categories",
+        joinColumns = [JoinColumn(name = "sensor_id")],
+        inverseJoinColumns = [JoinColumn(name = "categories_id")])
     var categories: List<Category>? = null,
     var sensorNick: String? = null
 )

@@ -61,7 +61,7 @@ function filterByCategory() {
         for (let y = 0; y < c.length; y++) {
             let category = c[y].id;
             if (categories[category] === undefined) {
-                categories[category] = [createFieldset(parent, list[i].categories[y].sensorCategory), 0];
+                categories[category] = [createFieldset(parent, list[i].categories[y].name), 0];
             }
             if (categories[category][1] % 3 === 0) {
                 createRow(categories[category][0]);
@@ -84,7 +84,7 @@ function filterByType() {
     for (let i = 0; i < list.length; i++) {
         let typeId = list[i].sensorType.id;
         if (types[typeId] === undefined) {
-            types[typeId] = [createFieldset(parent, list[i].sensorType.sensorType), 0];
+            types[typeId] = [createFieldset(parent, list[i].sensorType.typeName), 0];
         }
         if (types[typeId][1] % 3 === 0) {
             createRow(types[typeId][0]);
@@ -145,7 +145,7 @@ function createSensorDOM(parent, sensor, num, numRow) {
     p1DOM.classList.add("data");
     p2DOM.classList.add("data-value");
     p1DOM.setAttribute("data-id", sensor.sensorId);
-    p2DOM.setAttribute("data-unit", sensor.sensorType.unit);
+    p2DOM.setAttribute("data-unit", sensor.sensorType.description);
     p1DOM.setAttribute("id", "sensor_" + num);
     p2DOM.setAttribute("id", "value_" + num);
     p1DOM.innerHTML =  sensor.sensorNick + ":";

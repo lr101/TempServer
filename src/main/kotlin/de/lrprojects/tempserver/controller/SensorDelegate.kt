@@ -4,6 +4,7 @@ import de.lrprojects.tempserver.api.SensorsApiDelegate
 import de.lrprojects.tempserver.converter.toDto
 import de.lrprojects.tempserver.converter.toEntity
 import de.lrprojects.tempserver.model.SensorDto
+import de.lrprojects.tempserver.service.api.CategoryService
 import de.lrprojects.tempserver.service.api.SensorService
 import de.lrprojects.tempserver.service.api.TypeService
 import org.springframework.http.HttpStatus
@@ -13,7 +14,8 @@ import org.springframework.stereotype.Component
 @Component
 class SensorDelegate(
     private val sensorService: SensorService,
-    private val typeService: TypeService
+    private val typeService: TypeService,
+    private val categoryService: CategoryService
 ): SensorsApiDelegate {
 
     override fun getSensors(): ResponseEntity<MutableList<SensorDto>> {
@@ -30,7 +32,7 @@ class SensorDelegate(
     }
 
     override fun postSensor(sensorDto: SensorDto): ResponseEntity<SensorDto> {
-        return ResponseEntity(sensorService.createSensor(sensorDto.toEntity(typeService)).toDto(), HttpStatus.CREATED)
+        return ResponseEntity(sensorService.createSensor(sensorDto.toEntity(typeService, categoryService)).toDto(), HttpStatus.CREATED)
     }
 
     override fun putSensor(sensorId: String, sensorDto: SensorDto): ResponseEntity<SensorDto>? {

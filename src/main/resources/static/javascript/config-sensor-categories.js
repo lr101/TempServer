@@ -16,7 +16,7 @@ function submitData() {
 
     let json;
     if (sensor_category_id !== "" ) {
-        ajax.open("PUT", "/rest/v1/categories/", true);
+        ajax.open("PUT", "/rest/v1/categories/" + sensor_category_id, true);
         json = {name : sensor_category, id :sensor_category_id, description: "A new category"}
     } else if (sensor_category_id === "") {
         ajax.open("POST", "/rest/v1/categories", true);

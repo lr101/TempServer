@@ -4,9 +4,7 @@ properties:
     type: string
     description: The ID of the sensor
   sensorType:
-    type: string
-    nullable: true
-    description: The type of the sensor
+    $ref: 'typeDto.yaml'
   sensorNick:
     type: string
     nullable: true

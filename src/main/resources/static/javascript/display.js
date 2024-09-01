@@ -81,7 +81,7 @@ function getDataGraph(offset, date1, date2) {
     if (date1 === undefined)  date1 = getCurrentDate(0);
     if (date2 === undefined)  date2 = getCurrentDate(offset);
     const ajax = new XMLHttpRequest();
-    ajax.open("GET", `/rest/v1/sensors/${id}/entry?sensor_id=` + id + "&date1=" + date1 + "&date2=" + date2 + "&interval=" + offset , true);
+    ajax.open("GET", `/rest/v1/sensors/${id}/entry?sensor_id=` + id + "&date1=" + date1 + "&date2=" + date2 + "&interval=" + (offset/2) , true);
     ajax.send(null);
     ajax.onreadystatechange = function () {
         if (ajax.readyState === 4) {

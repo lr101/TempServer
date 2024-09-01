@@ -31,8 +31,8 @@ class CategoryDelegate(
         return ResponseEntity.ok(categoryService.getCategoryById(categoryId)?.toDto())
     }
 
-    override fun updateSensorCategory(categoryDto: CategoryDto): ResponseEntity<CategoryDto> {
-        return ResponseEntity.ok(categoryService.updateCategory(categoryDto.toEntity()).toDto())
+    override fun updateSensorCategory(categoryId: Long, categoryDto: CategoryDto): ResponseEntity<CategoryDto>? {
+        return ResponseEntity.ok(categoryService.updateCategory(categoryDto, categoryId).toDto())
     }
 
 }

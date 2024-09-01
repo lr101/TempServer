@@ -18,6 +18,35 @@ get:
         application/json:
           schema:
             $ref: '../schemas/categoryDto.yaml'
+
+put:
+  summary: Update a sensor category
+  operationId: updateSensorCategory
+  tags:
+    - Sensor Categories
+  parameters:
+    - name: categoryId
+      in: path
+      required: true
+      description: The ID of the sensor category to retrieve
+      schema:
+        type: integer
+        format: int64
+  requestBody:
+    description: The sensor category to update
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/categoryDto.yaml'
+  responses:
+    '200':
+      description: The updated sensor category
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/categoryDto.yaml'
+
 delete:
   summary: Delete a sensor category by ID
   operationId: deleteSensorCategory

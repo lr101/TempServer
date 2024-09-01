@@ -28,7 +28,7 @@ class SensorServiceImpl(
         val sensorToUpdate = sensorRepository.findById(sensorId).orElse(null)
         sensorToUpdate?.let {
             it.sensorNick = sensor.sensorNick
-            it.type = sensor.sensorType?.let { typeRepository.findByTypeName(sensor.sensorType) }
+            it.type = sensor.sensorType?.let { typeRepository.findByIdOrNull(sensor.sensorType.id) }
             it.categories = sensor.categories?.map { c -> categoryRepository.findByIdOrNull(c.id)!! }
         }
         return sensorRepository.save(sensorToUpdate!!)

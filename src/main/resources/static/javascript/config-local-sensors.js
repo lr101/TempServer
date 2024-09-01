@@ -98,7 +98,7 @@ function submitData() {
         ajax.send(null);
         ajax.onreadystatechange = function() {
             if (ajax.readyState === 4) {
-                let sensorType = JSON.parse(ajax.responseText).typeName;
+                let sensorType = JSON.parse(ajax.responseText).id;
                 let categories = $(category).find("option:selected");
                 let sensorCategory = [];
                 for (let i = 0; i < categories.length; i++) {
@@ -109,7 +109,7 @@ function submitData() {
                 }
                 ajax.open("PUT", "/rest/v1/sensors/" + sensor_id, true);
                 ajax.setRequestHeader("Content-Type", "application/json");
-                let json = {sensorNick: sensor_nick, sensorType: sensorType, categories:sensorCategory}
+                let json = {sensorNick: sensor_nick, sensorType: {id: sensorType}, categories:sensorCategory}
                 ajax.send(JSON.stringify(json));
                 ajax.onreadystatechange = function () {
                     if (ajax.readyState === 4) {
