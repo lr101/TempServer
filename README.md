@@ -18,6 +18,10 @@ This service is run via docker:
     INFLUXDB_TOKEN=<influx_token>
     INFLUXDB_BUCKET=tempserver
     INFLUXDB_ORG=<org>
+   
+    # optional
+    MAX_THREADS=5
+    MAX_CONNECTIONS=200
    ```
    Fill in your own values for connecting to existing postgresdb or influxdb instances. Create your own influxdb token via the influx ui.
 2. Copy the `docker-compose.yml` file into the same folder

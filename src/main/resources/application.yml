@@ -1,5 +1,9 @@
 server:
     port: ${PORT:8080}
+    tomcat:
+      threads:
+        max: ${MAX_THREADS:5}
+      max-connections: ${MAX_CONNECTIONS:200}
 
 spring:
   config:
