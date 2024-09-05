@@ -1,38 +1,46 @@
 package de.lrprojects.tempserver.service.impl
 
 import com.influxdb.client.InfluxDBClient
+import com.influxdb.client.QueryApi
 import com.influxdb.client.domain.WritePrecision
 import com.influxdb.client.write.Point
 import com.influxdb.exceptions.BadRequestException
 import de.lrprojects.tempserver.config.InfluxProperties
 import de.lrprojects.tempserver.entity.Entry
 import de.lrprojects.tempserver.service.api.EntryService
+import org.hibernate.query.sqm.tree.SqmNode.log
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Service
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 @Service
 class EntryServiceImpl(
-    private val influxDBClient: InfluxDBClient,
+    @Qualifier("influxDBClient") private val influxDBClient: InfluxDBClient,
+    @Qualifier("influxDBSampledClient") private val influxDBSampledClient: InfluxDBClient,
     private val influxProperties: InfluxProperties
 ): EntryService {
 
     override fun getEntries(sensorId: String, date1: OffsetDateTime?, date2: OffsetDateTime?, limit: Int?, interval: Int?): List<Entry> {
         val toDate = date1?.toString() ?: "now()"
         val fromDate = date2?.toString() ?:  "0"
+
+        val selectedBucket = selectBucket(date2)
+        val bucketName = if (selectedBucket) influxProperties.bucket else influxProperties.bucketSampled
+        val bucketQueryApi = if (selectedBucket) influxDBClient.queryApi else influxDBSampledClient.queryApi
+
         val query = if (limit != null) {
-            getLimit(influxProperties.bucket, sensorId, toDate, fromDate, limit)
+            getLimit(bucketName, sensorId, toDate, fromDate, limit)
         } else if (interval != null) {
-            aggregatedMean(influxProperties.bucket, sensorId, toDate, fromDate, interval)
+            aggregatedMean(bucketName, sensorId, toDate, fromDate, interval)
         } else {
-            getEntries(influxProperties.bucket, sensorId, toDate, fromDate)
+            getEntries(bucketName, sensorId, toDate, fromDate)
         }
 
-        val queryApi = influxDBClient.queryApi
         try {
             log.info("Run getEntries query: $query")
-            val tables = queryApi.query(query)
+            val tables = bucketQueryApi.query(query)
             return tables.flatMap { table ->
                 table.records.map {
                     Entry(
@@ -67,6 +75,11 @@ class EntryServiceImpl(
         """.trimIndent()
 
         influxDBClient.queryApi.query(deleteQuery)
+    }
+
+
+    private fun selectBucket(date2: OffsetDateTime?): Boolean {
+        return date2 != null && OffsetDateTime.now().minusDays(influxProperties.retentionPeriod.toLong()).isBefore(date2)
     }
 
     companion object {

@@ -17,7 +17,9 @@ This service is run via docker:
     INFLUXDB_URL=http://indluxdb:8086
     INFLUXDB_TOKEN=<influx_token>
     INFLUXDB_BUCKET=tempserver
+    INFLUXDB_DOWNSAMPLED_BUCKET=tempserver_sampled
     INFLUXDB_ORG=<org>
+    INFLUXDB_RETENTION_PERIOD=7 # in days
    
     # optional
     MAX_THREADS=5
@@ -29,6 +31,27 @@ This service is run via docker:
    ```shell
    docker compose up -d
    ```
+   
+### Influxdb
+
+- Set up a bucket (ex. tempserver) and a bucket for down-sampling (ex. tempserver_sampled)
+- Create an access token to allow access to read and write to these buckets
+- Create an influx task to down-sample and run it every 24h to aggregate the last day: 
+   ```
+   option task = {name: "Aggregate Tempserver 24h", every: 24h}
+
+   data =
+   from(bucket: "tempserver")
+   |> range(start: -1d, stop: now())
+   |> filter(fn: (r) => r._measurement == "entry")
+   
+   data
+   |> aggregateWindow(fn: mean, every: 1h)
+   |> to(bucket: "tempserver_sampled", org: "lr-projects")
+
+  ```
+- Setup the tempserver retention policy to delete values after a specific time period (to keep data size small)
+- Make sure the `INFLUX_RETENTION_PERIOD` value in your .env is the same (or smaller) to have available data 
 
 ## Arduino
 

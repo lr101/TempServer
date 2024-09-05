@@ -27,3 +27,5 @@ influxdb:
   bucket: ${INFLUXDB_BUCKET}
   org: ${INFLUXDB_ORG}
   enabled: true
+  bucket-sampled: ${INFLUXDB_DOWNSAMPLED_BUCKET}
+  retention-period: ${INFLUXDB_RETENTION_PERIOD}

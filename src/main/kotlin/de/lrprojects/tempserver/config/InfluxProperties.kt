@@ -10,6 +10,8 @@ class InfluxProperties {
     lateinit var url: String
     lateinit var token: String
     lateinit var bucket: String
+    lateinit var bucketSampled: String
     lateinit var org: String
     var enabled: Boolean = false
+    var retentionPeriod: Int = 7
 }

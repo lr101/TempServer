@@ -21,4 +21,18 @@ class InfluxDbConfiguration(private val influxProperties: InfluxProperties) {
             null
         }
     }
+
+    @Bean
+    fun influxDBSampledClient(): InfluxDBClient? {
+        return if (influxProperties.enabled) {
+            InfluxDBClientFactory.create(
+                influxProperties.url,
+                influxProperties.token.toCharArray(),
+                influxProperties.org,
+                influxProperties.bucketSampled
+            )
+        } else {
+            null
+        }
+    }
 }
