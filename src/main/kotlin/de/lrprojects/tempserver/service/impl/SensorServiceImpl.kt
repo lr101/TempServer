@@ -20,6 +20,8 @@ class SensorServiceImpl(
     override fun getSensorById(sensorId: String): Sensor? = sensorRepository.findById(sensorId).orElse(null)
 
     override fun createSensor(sensor: Sensor): Sensor {
+        val sensorEntity = sensorRepository.findById(sensor.id!!).orElse(null)
+        if (sensorEntity != null) return sensorEntity
         val savedSensor = sensorRepository.save(sensor)
         return savedSensor
     }
